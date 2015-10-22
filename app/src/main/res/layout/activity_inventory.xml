@@ -1,0 +1,119 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context="com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity"
+    android:background="@drawable/inventory_background"
+    >
+
+    <com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryGridView
+        android:layout_height="match_parent"
+        android:id="@+id/inventoryGridView"
+        android:numColumns="3"
+        android:scrollbars="none"
+        android:gravity="right"
+        android:columnWidth="72dp"
+        android:stretchMode="spacingWidth"
+        android:layout_width="219dp"
+        android:minWidth="216dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <ImageView
+        android:layout_width="96dp"
+        android:layout_height="96dp"
+        android:id="@+id/ImageView_Selected_Item"
+        android:src="@drawable/inventory_item_border"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Grade:"
+        android:id="@+id/gradeTextView_Inventory"
+        android:layout_below="@+id/typeTextView_Inventory"
+        android:layout_toRightOf="@+id/ImageView_Selected_Item"
+        android:layout_toEndOf="@+id/ImageView_Selected_Item" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Type:"
+        android:id="@+id/typeTextView_Inventory"
+        android:layout_below="@+id/nameTextView_Inventory"
+        android:layout_alignLeft="@+id/nameTextView_Inventory"
+        android:layout_alignStart="@+id/nameTextView_Inventory" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Name:"
+        android:id="@+id/nameTextView_Inventory"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/ImageView_Selected_Item"
+        android:layout_toEndOf="@+id/ImageView_Selected_Item" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/nameTextView_Inventory_input"
+        android:layout_alignTop="@+id/nameTextView_Inventory"
+        android:layout_toRightOf="@+id/nameTextView_Inventory"
+        android:layout_toEndOf="@+id/nameTextView_Inventory"
+        android:layout_marginLeft="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/typeTextView_Inventory_input"
+        android:layout_below="@+id/nameTextView_Inventory_input"
+        android:layout_alignLeft="@+id/nameTextView_Inventory_input"
+        android:layout_alignStart="@+id/nameTextView_Inventory_input" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/gradeTextView_Inventory_input"
+        android:layout_alignBottom="@+id/gradeTextView_Inventory"
+        android:layout_alignRight="@+id/typeTextView_Inventory_input"
+        android:layout_alignEnd="@+id/typeTextView_Inventory_input" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/ImageView_Selected_Item"
+        android:layout_alignLeft="@+id/ImageView_Selected_Item"
+        android:layout_alignStart="@+id/ImageView_Selected_Item"
+        android:layout_toLeftOf="@+id/inventoryGridView"
+        android:layout_toStartOf="@+id/inventoryGridView">
+
+        <ImageView
+            android:layout_width="96dp"
+            android:layout_height="192dp"
+            android:id="@+id/imageView_Player_Inventory"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:id="@+id/imageView_player_item_holding"
+            android:layout_alignTop="@+id/imageView_Player_Inventory"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</RelativeLayout>

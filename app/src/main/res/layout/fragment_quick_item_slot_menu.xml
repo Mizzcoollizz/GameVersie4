@@ -1,0 +1,55 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context="com.thuis.gameversie2.MapScreen.Quick_Item_Slot_Menu.Quick_Item_Slot_Menu_Fragment"
+    android:rowCount="2"
+    android:columnCount="4"
+    android:background="@drawable/inventory_background">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <com.thuis.gameversie2.MapScreen.Quick_Item_Slot_Menu.Quick_Item_Slot_Gridview
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/view"
+        android:layout_row="1"
+        android:layout_column="0"
+        android:layout_below="@+id/armour_quick_slot_btn"
+        android:layout_alignRight="@+id/tools_and_weapon_quick_item_slot_btn"
+        android:layout_alignEnd="@+id/tools_and_weapon_quick_item_slot_btn"
+        android:layout_alignLeft="@+id/armour_quick_slot_btn"
+        android:layout_alignStart="@+id/armour_quick_slot_btn"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/armour_quick_slot_btn"
+        android:src="@drawable/armour_quickslot_button"
+        android:layout_row="0"
+        android:layout_column="0"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/magic_quick_slot_btn"
+        android:src="@drawable/magic_quickslot_button"
+        android:layout_row="0"
+        android:layout_column="1"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/armour_quick_slot_btn"
+        android:layout_toEndOf="@+id/armour_quick_slot_btn" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tools_and_weapon_quick_item_slot_btn"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/magic_quick_slot_btn"
+        android:layout_toEndOf="@+id/magic_quick_slot_btn"
+        android:src="@drawable/weapontools_quickslot_button" />
+</RelativeLayout>

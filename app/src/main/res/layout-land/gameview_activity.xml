@@ -1,0 +1,131 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp"
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp"
+    tools:context=".GameView_Activity"
+    android:padding="0dp">
+
+
+    <view
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        class="com.thuis.gameversie2.MapScreen.MapSurfaceView"
+        android:id="@+id/mapView"
+        android:layout_alignParentTop="true"
+        android:padding="0dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:id="@+id/leftBTN"
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:onClick="goLeft"
+        android:layout_above="@+id/downBTN"
+        android:layout_toRightOf="@+id/inventoryBtn"
+        android:layout_toEndOf="@+id/inventoryBtn"
+        android:layout_alignTop="@+id/rightBTN" />
+
+    <Button
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
+        android:id="@+id/rightBTN"
+        android:layout_above="@+id/downBTN"
+        android:layout_alignRight="@+id/mapView"
+        android:layout_alignEnd="@+id/mapView"
+        android:layout_below="@+id/upBTN"
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:onClick="goRight"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:text=""
+        android:id="@+id/upBTN"
+        android:layout_alignParentTop="true"
+        android:paddingRight="-8dp"
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:onClick="goUp"
+        android:layout_toRightOf="@+id/inventoryBtn"
+        android:layout_toLeftOf="@+id/rightBTN"
+        android:layout_toStartOf="@+id/rightBTN" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:id="@+id/downBTN"
+        android:layout_alignParentBottom="true"
+        android:visibility="visible"
+        android:background="@android:color/transparent"
+        android:onClick="goDown"
+        android:layout_toRightOf="@+id/mapBtn"
+        android:layout_alignRight="@+id/rightBTN"
+        android:layout_alignEnd="@+id/rightBTN" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/quick_item_slot_btn"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/upBTN"
+        android:layout_toEndOf="@+id/upBTN"
+        android:src="@drawable/quick_item_button"
+        android:layout_above="@+id/rightBTN"
+        android:background="@android:color/transparent"
+        android:scaleType="centerCrop"
+        android:onClick="onQuickItemMenuClick" />
+
+
+
+    <ImageButton
+        android:layout_width="111dp"
+        android:layout_height="111dp"
+        android:id="@+id/inventoryBtn"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:src="@drawable/inventory"
+        android:onClick="goToInventory"/>
+
+    <ImageButton
+        android:layout_width="111dp"
+        android:layout_height="111dp"
+        android:id="@+id/SettingsBtn"
+        android:src="@drawable/instellingen2"
+        android:layout_below="@+id/inventoryBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="111dp"
+        android:layout_height="111dp"
+        android:id="@+id/mapBtn"
+        android:src="@drawable/map"
+        android:layout_below="@+id/SettingsBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/inventoryBtn"
+        android:layout_toEndOf="@+id/inventoryBtn"
+        android:id="@+id/quick_item_slot_RelativeLayout"
+        android:visibility="visible"
+        android:background="@android:color/transparent"></RelativeLayout>
+
+
+</RelativeLayout>

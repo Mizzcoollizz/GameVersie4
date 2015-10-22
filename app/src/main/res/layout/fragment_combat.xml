@@ -1,0 +1,35 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.thuis.gameversie2.Combat.Combat_Fragment"
+    android:onClick="Combat_Fragment_Inner">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_gravity="center_horizontal|bottom" />
+
+    <ImageButton
+        android:layout_width="105dp"
+        android:layout_height="87dp"
+        android:id="@+id/button1"
+        android:layout_gravity="center_horizontal|top"
+        android:backgroundTint="@android:color/transparent" />
+
+    <ImageButton
+        android:layout_width="72dp"
+        android:layout_height="60dp"
+        android:id="@+id/button2"
+        android:layout_gravity="left|center_vertical" />
+
+    <ImageButton
+        android:layout_width="90dp"
+        android:layout_height="75dp"
+        android:id="@+id/button3"
+        android:layout_gravity="right|center_vertical" />
+
+</FrameLayout>

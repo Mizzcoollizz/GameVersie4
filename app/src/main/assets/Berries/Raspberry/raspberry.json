@@ -1,0 +1,10 @@
+{
+"name": "raspberry",
+"growtime": 3,
+"image": "raspberry.png",
+"stateImages": [
+  "raspberry_bush1.png",
+  "raspberry_bush2.png"
+]
+
+}
