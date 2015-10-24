@@ -21,10 +21,10 @@ import com.thuis.gameversie2.R;
 
 public class GameView_Activity extends Activity {
 
-    Button leftBtn = null;
-    Button rightBtn = null;
-    Button upBtn = null;
-    Button downBtn = null;
+    private static MovePlayerButton leftBtn = null;
+    private static MovePlayerButton rightBtn = null;
+    private static MovePlayerButton upBtn = null;
+    private static MovePlayerButton downBtn = null;
     static Context context = null;
     private Quick_Item_Slot_Menu_Fragment fragment = null;
     private boolean quick_item_slot_menu_expanded = false;
@@ -38,48 +38,43 @@ public class GameView_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameview_activity);
         context = this;
-        GamePanel.setPlayer(new MainCharacter("male", "human", "me", GameView_Activity.getContext()));
+        GamePanel.setPlayer(new MainCharacter("male", "human", "me", getContext()));
         GamePanel.setInventory(new Inventory());
         MapHandler.setFarm();
     }
 
+    public static Button getLeftBtn() {
+        return leftBtn;
+    }
+
+    public static Button getRightBtn() {
+        return rightBtn;
+    }
+
+    public static Button getUpBtn() {
+        return upBtn;
+    }
+
+    public static Button getDownBtn() {
+        return downBtn;
+    }
+
     private void setButtons() {
-        leftBtn = (Button) findViewById(R.id.leftBTN);
-        leftBtn.setOnTouchListener(new MovePlayerButtonListener());
+        leftBtn = (MovePlayerButton) findViewById(R.id.leftBTN);
+        leftBtn.setOnTouchListener(new MovePlayerButtonListener(leftBtn));
 
-        rightBtn = (Button) findViewById(R.id.rightBTN);
-        rightBtn.setOnTouchListener(new MovePlayerButtonListener());
+        rightBtn = (MovePlayerButton) findViewById(R.id.rightBTN);
+        rightBtn.setOnTouchListener(new MovePlayerButtonListener(rightBtn));
 
-        upBtn = (Button) findViewById(R.id.upBTN);
-        upBtn.setOnTouchListener(new MovePlayerButtonListener());
+        upBtn = (MovePlayerButton) findViewById(R.id.upBTN);
+        upBtn.setOnTouchListener(new MovePlayerButtonListener(upBtn));
 
-        downBtn = (Button) findViewById(R.id.downBTN);
-        downBtn.setOnTouchListener(new MovePlayerButtonListener());
+        downBtn = (MovePlayerButton) findViewById(R.id.downBTN);
+        downBtn.setOnTouchListener(new MovePlayerButtonListener(downBtn));
     }
 
 
-    public void goLeft(View view){
-        MainCharacter.walk(-1, 0);
-        Log.i("tag", "left");
 
-    }
-
-    public void goRight(View view){
-        MainCharacter.walk(1, 0);
-
-        Log.i("tag", "right");
-    }
-
-    public void goUp(View view){
-        MainCharacter.walk(0, -1);
-        Log.i("tag", "up");
-
-    }
-    public void goDown(View view){
-        MainCharacter.walk(0, 1);
-        Log.i("tag", "down");
-
-    }
 //  Combat buttons! DO NOT TOUCH!!
     public void DefenceButtonOnClick(View view) {
         System.out.print("niet zeuren hier werk ik nog aan!");

@@ -11,16 +11,20 @@
             android:name=".MapScreen.GameView_Activity"
             android:label="MapScreen"
             android:screenOrientation="landscape" >
+                    </activity>
+        <activity
+            android:name=".Inventory_System.Inventory_View.Inventory_Activity"
+            android:label="@string/title_activity_inventory_"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".Main_Menu_Activity"
+            android:label="@string/title_activity_main__menu_" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".Inventory_System.Inventory_View.Inventory_Activity"
-            android:label="@string/title_activity_inventory_"
-            android:screenOrientation="landscape" >
         </activity>
     </application>
 

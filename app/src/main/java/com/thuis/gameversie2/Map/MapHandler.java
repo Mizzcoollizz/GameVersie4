@@ -1,6 +1,7 @@
 package com.thuis.gameversie2.Map;
 
 import com.thuis.gameversie2.GamePanel;
+import com.thuis.gameversie2.Main_Menu_Activity;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.JsonParsers.JsonMapParser;
 import com.thuis.gameversie2.Map.Maps.Map;
@@ -26,7 +27,7 @@ public class MapHandler {
     public static void setFarm(){
         if(GamePanel.getPlayerHomeMap() == null || GamePanel.getPlayerHomeMap().equals(null)){
             PlayerHomeMap map = new PlayerHomeMap();
-            jsonMapParser = new JsonMapParser(GameView_Activity.getContext(), map);
+            jsonMapParser = new JsonMapParser(Main_Menu_Activity.getContext(), map);
             currentMap = map;
             GamePanel.setPlayerHomeMap(map);
         }else{

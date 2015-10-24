@@ -45,7 +45,7 @@ public class ItemSelectListener implements AdapterView.OnItemClickListener {
 
             if (item != null && !item.equals(null) && view != null) {
                 nameTextView.setText(item.getName());
-                typeTextView.setText(item.getClass().getSimpleName());
+                typeTextView.setText(item.getType());
                 gradeTextView.setText(Integer.toString(item.getGrade()));
 
                 Bitmap imageBitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.inventory_item_border);

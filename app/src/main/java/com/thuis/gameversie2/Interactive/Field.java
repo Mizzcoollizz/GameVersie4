@@ -90,8 +90,7 @@ public class Field extends Interactive{
      */
     @Override
     public Bitmap getImage() {
-        Bitmap image = defaultImage;
-        image = defaultImage.copy(Bitmap.Config.ARGB_4444, true);
+        Bitmap image = defaultImage.copy(Bitmap.Config.ARGB_4444, true);
         Canvas canvas = new Canvas(image);
         if(isWatered()){
            canvas.drawBitmap(
@@ -152,7 +151,7 @@ public class Field extends Interactive{
         return crop;
     }
 
-    public boolean hasItem(){
+    public boolean hasCrop(){
         if(item != null){
             return true;
         }else{

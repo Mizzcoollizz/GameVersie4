@@ -30,6 +30,7 @@ public class MainCharacter {
 	private String hairColor = "Blond";
 
 	private Context context = null;
+	private Bitmap toolHoldingInventoryImage;
 
 	public int getSpeed() {
 		return speed;
@@ -327,5 +328,23 @@ public class MainCharacter {
 
 	public boolean isHoldingTool() {
 		return (getToolHolding() != null);
+	}
+
+	public Bitmap getItemHoldingInventoryImage() {
+		if(itemHolding != null){
+			return itemHolding.getInventoryImage();
+		}else{
+			return Item.borderImageBitmap;
+		}
+
+	}
+
+	public Bitmap getToolHoldingInventoryImage() {
+		if(toolHolding != null){
+			return toolHolding.getInventoryImage();
+		}else{
+			return Item.borderImageBitmap;
+		}
+
 	}
 }

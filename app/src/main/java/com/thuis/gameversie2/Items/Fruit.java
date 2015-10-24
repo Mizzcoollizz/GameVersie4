@@ -1,15 +1,11 @@
 package com.thuis.gameversie2.Items;
 
+import android.graphics.Canvas;
+
 /**
  * Created by Elize on 5-9-2015.
  */
-public class Fruit extends Item{
-
-    protected int sellPrice = 0;
-
-    protected int buyPrice = 0;
-
-    protected int grade = 0;
+public abstract class Fruit extends Item{
 
 
     protected String name = null;
@@ -24,9 +20,6 @@ public class Fruit extends Item{
     }
 
 
-    @Override
-    public void setImage() {
 
-    }
 
 }

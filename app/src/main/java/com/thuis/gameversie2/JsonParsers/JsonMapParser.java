@@ -12,7 +12,7 @@ import com.thuis.gameversie2.Interactive.Bush;
 import com.thuis.gameversie2.Interactive.Field;
 import com.thuis.gameversie2.Interactive.Interactive;
 import com.thuis.gameversie2.Interactive.Tree;
-import com.thuis.gameversie2.Items.Berry;
+import com.thuis.gameversie2.Items.Berries.Raspberry;
 import com.thuis.gameversie2.Map.CollisionObject;
 import com.thuis.gameversie2.Map.ItemSpawnArea;
 import com.thuis.gameversie2.Map.Layer;
@@ -502,9 +502,9 @@ public class JsonMapParser {
     private Interactive getInteractiveObjectByType(int x, int y, int height, int width, String type, int growState) {
         //TODO first add a new ItemSpawnArea to the map!
         if (type.equals("full_raspberry_bush")) {
-            return new Bush(x, y, width, height, true, new Berry("Raspberry"));
+            return new Bush(x, y, width, height, true, new Raspberry());
         } else if (type.equals("empty_raspberry_bush")) {
-            return new Bush(x, y, width, height, false, new Berry("Raspberry"));
+            return new Bush(x, y, width, height, false, new Raspberry());
         }else if(type.equals("field")){
             return new Field(x, y, width, height);
         }else if(type.equals("tree")){

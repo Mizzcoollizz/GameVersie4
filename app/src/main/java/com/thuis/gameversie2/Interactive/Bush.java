@@ -2,7 +2,8 @@ package com.thuis.gameversie2.Interactive;
 
 import android.graphics.Bitmap;
 
-import com.thuis.gameversie2.Items.Berry;
+
+import com.thuis.gameversie2.Items.Berries.Berry;
 import com.thuis.gameversie2.Items.Tools.Tool;
 
 /**

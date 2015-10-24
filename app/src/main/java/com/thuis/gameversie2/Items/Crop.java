@@ -1,8 +1,9 @@
 package com.thuis.gameversie2.Items;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 
-public class Crop extends Item {
+public abstract class Crop extends Item {
 	private String name = null;
 	private String season = null;
 	private int totalGrowTimeInDays = 0;
@@ -43,6 +44,12 @@ public class Crop extends Item {
 
 	@Override
 	public void setImage() {
+	//TODO set image
+	}
 
+	@Override
+	public void setInventoryImage() {
+		Canvas canvas = new Canvas(borderImageBitmap);
+		canvas.drawBitmap(image, 0, 0, null);
 	}
 }

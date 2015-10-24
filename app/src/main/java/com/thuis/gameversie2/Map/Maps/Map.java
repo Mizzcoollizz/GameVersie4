@@ -2,30 +2,23 @@ package com.thuis.gameversie2.Map.Maps;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 
 import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.GamePanel;
-import com.thuis.gameversie2.Interactive.Bush;
 import com.thuis.gameversie2.Interactive.Field;
 import com.thuis.gameversie2.Interactive.Interactive;
 import com.thuis.gameversie2.Interactive.Tree;
-import com.thuis.gameversie2.Items.Item;
-import com.thuis.gameversie2.Items.Rock;
 import com.thuis.gameversie2.Items.Spawnable_Item;
 import com.thuis.gameversie2.Map.CollisionObject;
 import com.thuis.gameversie2.Map.ItemSpawnArea;
 import com.thuis.gameversie2.Map.Layer;
-import com.thuis.gameversie2.Map.MapHandler;
 import com.thuis.gameversie2.Map.Tile;
 import com.thuis.gameversie2.MapScreen.MapSurfaceView;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * Created by Elize on 31-7-2015.
@@ -332,7 +325,7 @@ public abstract class Map {
         while(tiles.size() != numberToSpawn && checkedFields.size() != fields.size()){
             int index = new Random().nextInt(fields.size());
             Field field = fields.get(index);
-            if(!field.isPlowed() && ! field.isSown() && !field.hasItem()) {
+            if(!field.isPlowed() && ! field.isSown() && !field.hasCrop()) {
                 tiles.add(fields.get(index));
             }
             checkedFields.add(field);

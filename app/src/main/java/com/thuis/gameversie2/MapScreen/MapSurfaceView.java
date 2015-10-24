@@ -3,8 +3,6 @@ package com.thuis.gameversie2.MapScreen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -183,7 +181,7 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
             }
         }else if (interactive.getClass().isInstance(Field.class)) {
             Field field = (Field) interactive;
-            if (field.hasItem()) {
+            if (field.hasCrop()) {
                 Spawnable_Item item = field.getItem();
                 canvas.drawBitmap(item.getImage(),
                         field.getXLocation() - getScreenX(),

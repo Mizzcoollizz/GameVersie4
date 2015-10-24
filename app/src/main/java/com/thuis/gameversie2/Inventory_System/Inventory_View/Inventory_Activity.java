@@ -41,29 +41,14 @@ public class Inventory_Activity extends Activity {
     }
 
     private void setPlayerItems(){
-        Bitmap borderImage = BitmapFactory.decodeResource(getResources(), R.drawable.inventory_item_border);
-        Bitmap borderBitmap = Bitmap.createScaledBitmap(borderImage, 72, 72, false);
-
 
         ImageView itemHoldingView = (ImageView) findViewById(R.id.imageView_player_item_holding);
 
-        Bitmap itemHoldingBitmap = GamePanel.getPlayer().getItemHolding().getImage();
-        if(itemHoldingBitmap != null) {
-            itemHoldingView.setImageBitmap(itemHoldingBitmap);
-        }else{
-            itemHoldingView.setImageBitmap(borderBitmap);
-        }
-
+        itemHoldingView.setImageBitmap(GamePanel.getPlayer().getItemHoldingInventoryImage());
 
         ImageView toolHoldingView = (ImageView) findViewById(R.id.imageViewPlayerToolHolding);
-        Bitmap toolHoldingBitmap = GamePanel.getPlayer().getToolHolding().getImage();
-        if(toolHoldingBitmap != null) {
-            toolHoldingView.setImageBitmap(toolHoldingBitmap);
-        }else{
-            toolHoldingView.setImageBitmap(borderBitmap);
-        }
 
-
+        toolHoldingView.setImageBitmap(GamePanel.getPlayer().getToolHoldingInventoryImage());
 
     }
 
