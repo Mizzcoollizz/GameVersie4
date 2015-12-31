@@ -242,6 +242,11 @@ public abstract class Map {
                 interactives.add(interactive);
             }
         }
+
+        for(Interactive interactive: interactives){
+            interactive.setCollision();
+        }
+
         return interactives;
     }
 
@@ -360,6 +365,13 @@ public abstract class Map {
 
 
 
+    public void addcollisionObject(CollisionObject collisionObject){
+        this.collisionObjects.add(collisionObject);
+    }
+
+    public void removeCollisionObject(CollisionObject collisionObject){
+        this.collisionObjects.remove(collisionObject);
+    }
 
 
 }

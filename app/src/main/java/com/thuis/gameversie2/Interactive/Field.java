@@ -5,7 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
-import com.thuis.gameversie2.Items.Crop;
+import com.thuis.gameversie2.Items.Crops.Crop;
 import com.thuis.gameversie2.Items.Spawnable_Item;
 import com.thuis.gameversie2.Items.Tools.Tool;
 import com.thuis.gameversie2.R;
@@ -24,6 +24,8 @@ public class Field extends Interactive{
     Crop crop = null;
     Bitmap defaultImage = null;
     Spawnable_Item item = null;
+    private static Bitmap wateredImage = null;
+    private static Bitmap plowedImage = null;
 
     @Override
     public void update(){
@@ -34,9 +36,15 @@ public class Field extends Interactive{
         setIsWatered(false);
     }
 
+    @Override
+    public void setCollision() {
+        //TODO set  collison?
+    }
+
     private void setGrowStateByGrowDay() {
-            if ((growState * crop.getGrowTimePerStage()) + crop.getGrowTimePerStage() == growDay) {
+            if (growDay == crop.getGrowTimePerStage()) {
                 growState++;
+                growDay = 0;
             }
     }
 
@@ -51,10 +59,10 @@ public class Field extends Interactive{
 
     public Field(long xLocation, long yLocation, int width, int height) {
        super(xLocation, yLocation, width, height);
-        setdefaultFieldImage();
+        setDefaultFieldImage();
     }
 
-    private void setdefaultFieldImage(){
+    private void setDefaultFieldImage(){
         Random random = new Random();
         int number = random.nextInt(3);
         switch(number){
@@ -65,6 +73,16 @@ public class Field extends Interactive{
             case 2: defaultImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.grond3 );
                 break;
         }
+        
+        if(wateredImage == null){
+            wateredImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.watered_field);
+        }
+        
+        if(plowedImage == null){
+            plowedImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.plowed_earth);
+        }
+        
+        
     }
 
     public void setIsWatered(boolean isWatered) {
@@ -85,7 +103,6 @@ public class Field extends Interactive{
      * This method is used for getting the image of the field.
      * First check if the field is watered, and if so, draw the watered layer over the default image.
      * Second check if the field is plowed, and if so, draw the plowed layer over the image;
-     *
      * @return the final bitmap
      */
     @Override
@@ -94,15 +111,14 @@ public class Field extends Interactive{
         Canvas canvas = new Canvas(image);
         if(isWatered()){
            canvas.drawBitmap(
-                   BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.watered_field), 0, 0, null);
+                  wateredImage, 0, 0, null);
         }
         if(isPlowed()){
             canvas.drawBitmap(
-                    BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.plowed_earth), 0, 0, null);
+                    plowedImage, 0, 0, null);
         }
-        if(isSown()){
+        if(isSown() && getCrop() != null){
             canvas.drawBitmap(getCrop().getGrowingImage(getGrowState()), 0, 0, null);
-
         }
         return image;
     }

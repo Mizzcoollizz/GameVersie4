@@ -3,6 +3,8 @@ package com.thuis.gameversie2.Interactive;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.thuis.gameversie2.Map.CollisionObject;
+import com.thuis.gameversie2.Map.MapHandler;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.Items.Tools.Axe;
 import com.thuis.gameversie2.Items.Tools.Tool;
@@ -24,7 +26,6 @@ public class Tree extends Interactive{
 
     public Tree(long xLocation, long yLocation, int width, int height) {
         super(xLocation, yLocation, width, height);
-        setCollision();
         setImage();
     }
 
@@ -43,18 +44,22 @@ public class Tree extends Interactive{
     public Tree(long xLocation, long yLocation, int width, int height, int growState) {
         super(xLocation, yLocation, width, height);
         this.growState = growState;
-        setCollision();
         setImage();
     }
 
-    private void setCollision() {
-        //TODO add collision
-
+    @Override
+    public void setCollision() {
+       if(this.growState == 0 ){
+            super.setCollisionObject(new CollisionObject(xLocation, yLocation, "tree", true, width, height));
+        }else{
+            super.setCollisionObject(new CollisionObject(xLocation, yLocation, "tree", false, width, height));
+        }
     }
 
     @Override
     public void onInteraction() {
         //Todo do nothing?
+        System.out.println("A tree");
     }
 
     @Override
@@ -74,13 +79,29 @@ public class Tree extends Interactive{
     }
 
     @Override
-    public void update() {
+    public void update(){
         this.growDay++;
         if(growDay == GROW_DAYS_PER_STATE){
-            if(growState != MAX_GROWSTATE){growState++;}
+            if(growState != MAX_GROWSTATE){
+                growState++;
+                setWidthAndHeight();
+            }
             growDay = 0;
         }
-        setImage();
+
     }
 
+    private void setWidthAndHeight() {
+        switch(growState){
+            case 0:
+                this.height = 1;
+                break;
+            case 1: this.height = 1;
+                break;
+            case 2: this.height = 2;
+                break;
+            case 3: this.height = 3;
+                break;
+        }
+    }
 }

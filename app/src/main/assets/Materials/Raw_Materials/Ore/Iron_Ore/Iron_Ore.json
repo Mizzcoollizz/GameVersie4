@@ -1,0 +1,7 @@
+{"name":"Iron Ore",
+  "type":"Raw Material",
+  "image":"Materials/Raw_Materials/Ore/Iron_Ore/Iron_Ore.png",
+  "sellPrice":25,
+  "buyPrice":50
+
+}

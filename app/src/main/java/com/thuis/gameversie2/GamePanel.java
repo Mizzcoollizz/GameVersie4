@@ -2,11 +2,9 @@ package com.thuis.gameversie2;
 
 import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.Inventory_System.Inventory;
-import com.thuis.gameversie2.Items.Rock;
-import com.thuis.gameversie2.Items.Wood;
+import com.thuis.gameversie2.Items.Raw_Materials.Rock;
+import com.thuis.gameversie2.Items.Raw_Materials.Wood;
 import com.thuis.gameversie2.Map.Maps.PlayerHomeMap;
-
-import java.util.ArrayList;
 
 /**
  * Created by Elize on 6-8-2015.
@@ -23,8 +21,6 @@ public class GamePanel {
 
     //Maps:
     private static PlayerHomeMap playerHomeMap = null;
-
-
 
     public static void setInventory(Inventory inventory) {
         GamePanel.inventory = inventory;

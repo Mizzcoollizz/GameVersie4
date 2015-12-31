@@ -1,0 +1,7 @@
+{"name":"Gold Ore",
+  "type":"Raw Material",
+  "image":"Materials/Raw_Materials/Ore/Gold_Ore/Gold_Ore.png",
+  "sellPrice":50,
+  "buyPrice":100
+
+}

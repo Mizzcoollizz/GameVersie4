@@ -1,6 +1,7 @@
 package com.thuis.gameversie2.Items.Tools;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.Items.Tools.Tool;
@@ -10,30 +11,92 @@ import com.thuis.gameversie2.Items.Tools.Tool;
  */
 public class Axe extends Tool {
 
-    private final int BUY_PRICE = 1000;
-    private final int SELL_PRICE = 500;
     private static Bitmap image = null;
     private static Bitmap inventoryImage = null;
+    private static int standardSellPrice = 0;
+    private static int standardBuyPrice = 0;
+    private static String NAME = null;
+    private static String TYPE = null;
+    private boolean jsonGathered = false;
+    private static final String PATH = "Tools/Axe/Axe.json";
+
 
     public Axe(int grade){
-        buyPrice = getBuyPriceByGrade(grade, BUY_PRICE);
-        sellPrice = getSellPriceByGrade(grade, SELL_PRICE);
-        setImage();
+        this.grade = grade;
+        getToolJson();
+    }
 
+    private void getToolJson(){
+        if(!jsonGathered) {
+            super.getToolJson(this);
+        }
     }
 
     @Override
-    public void setImage() {
-        //TODO set image
-        if(image == null){
-
-        }
-        setInventoryImage();
+    public boolean isJsonGathered() {
+        return jsonGathered;
     }
+
 
     @Override
     public Bitmap getImage() {
         return image;
+    }
+
+    @Override
+    public String getName() {
+        return TYPE;
+    }
+
+    @Override
+    public String getType() {
+        return TYPE;
+    }
+
+    @Override
+    protected void setStandardSellPrice(int i) {
+        standardSellPrice = i;
+    }
+
+    @Override
+    protected void setStandardBuyPrice(int i) {
+        standardBuyPrice = i;
+    }
+
+    @Override
+    protected void setType(String type) {
+        TYPE = type;
+    }
+
+    @Override
+    protected void setName(String name) {
+        NAME = name;
+    }
+
+    @Override
+    protected void setJsonGathered(boolean bool) {
+        jsonGathered = bool;
+    }
+
+    @Override
+    protected void loadImage(Bitmap _image) {
+        image = _image;
+        setInventoryImage();
+    }
+
+    @Override
+    protected String getPath() {
+        return PATH;
+    }
+
+    @Override
+    protected int getStandardSellPrice() {
+        return standardSellPrice;
+    }
+
+    @Override
+    protected int getStandardBuyPrice() {
+        return standardBuyPrice;
     }
 
     @Override

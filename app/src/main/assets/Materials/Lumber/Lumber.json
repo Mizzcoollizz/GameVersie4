@@ -1,0 +1,7 @@
+{"name":"Lumber",
+  "type":"Material",
+  "image":"Lumber.png",
+  "sellPrice":10,
+  "buyPrice":50
+
+}

@@ -13,6 +13,7 @@ import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Interactive.Field;
 import com.thuis.gameversie2.Interactive.Interactive;
+import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.Items.Spawnable_Item;
 import com.thuis.gameversie2.Map.ItemSpawnArea;
 import com.thuis.gameversie2.Map.Layer;
@@ -58,14 +59,14 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
 
     public static Rect getScreenRect(){
         Map map = MapHandler.getCurrentMap();
-        if(screenX != 0 && screenY != 0){
+        //if(screenX != 0 && screenY != 0){
             return new Rect((int)screenX - map.getTile_width(),
                     (int)screenY - map.getTile_height(),
                     (int)screenX + (int)screen_width + map.getTile_width(),
                     (int)screenY + (int)screen_height + map.getTile_height());
-        }else{
-            return null;
-        }
+//        }else{
+//            return null;
+//        }
     }
 
 
@@ -167,7 +168,7 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         if (interactive.getClass().isInstance(ItemSpawnArea.class)) {
             ItemSpawnArea itemSpawnArea = (ItemSpawnArea) interactive;
             if (itemSpawnArea.hasItem()) {
-                Spawnable_Item item = itemSpawnArea.getItem();
+                Item item = (Item) itemSpawnArea.getItem();
                 canvas.drawBitmap(item.getImage(),
                         itemSpawnArea.getXLocation() - getScreenX(),
                         itemSpawnArea.getYLocation() - getScreenY(),
@@ -182,7 +183,7 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
         }else if (interactive.getClass().isInstance(Field.class)) {
             Field field = (Field) interactive;
             if (field.hasCrop()) {
-                Spawnable_Item item = field.getItem();
+                Item item = (Item) field.getItem();
                 canvas.drawBitmap(item.getImage(),
                         field.getXLocation() - getScreenX(),
                         field.getYLocation() - getScreenY(),
@@ -259,7 +260,6 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
                                 null);
                     }
                     mapToDrawX++;
-
                 }
                 mapToDrawY++;
             }
@@ -267,7 +267,6 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
     }
 
     private int calculateStartTileY() {
-
         if(screenY < 0){
             screenY = 0;
             return 0;

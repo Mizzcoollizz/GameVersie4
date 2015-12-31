@@ -10,8 +10,14 @@ import com.thuis.gameversie2.Main_Menu_Activity;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.util.Random;
 
 public abstract class Item {
@@ -22,9 +28,7 @@ public abstract class Item {
 
 	protected int buyPrice = 0;
 
-	protected int grade = 0;
-
-	protected String name = null;
+	protected int grade = 1;
 
 	public static Bitmap borderImageBitmap = null;
 
@@ -32,7 +36,17 @@ public abstract class Item {
 		setBorderImageBitmap();
 	}
 
-	protected String type = "None";
+	public void setBuyPrice(int buyPrice) {
+		this.buyPrice = buyPrice;
+	}
+
+	public void setSellPrice(int sellPrice) {
+		this.sellPrice = sellPrice;
+	}
+
+	public void setGrade(int grade) {
+		this.grade = grade;
+	}
 
 	public Item(){}
 
@@ -45,7 +59,6 @@ public abstract class Item {
 		return false;
 	}
 
-	public abstract void setImage();
 	public abstract Bitmap getInventoryImage();
 	public abstract void setInventoryImage();
 
@@ -77,23 +90,27 @@ public abstract class Item {
 		return grade;
 	}
 
-	public String getName() {
-		return name;
-	}
+	public abstract String getName();
 
-	public void setGrade() {
+	public void setRandomGrade() {
 		Random random = new Random();
 		grade = random.nextInt(MAX_GRADE_RANDOM);
 	}
 
-	public Bitmap getJsonImage(String path) throws IOException {
-		InputStream is = Main_Menu_Activity.getContext().getAssets().open(path);
-		return BitmapFactory.decodeStream(is);
+	public static Bitmap getJsonImage(String path){
+		InputStream is  = null;
+		try {
+			System.out.println("Image" + path);
+			is = Main_Menu_Activity.getContext().getAssets().open(path);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}finally {
+			return BitmapFactory.decodeStream(is);
+		}
 	}
 
-	public String getType() {
-		return type;
-	}
+
+	public abstract String getType();
 
 	public static int getBuyPriceByGrade(int grade, int _buyPrice){
 		return grade * _buyPrice;
@@ -101,6 +118,80 @@ public abstract class Item {
 
 	public static int getSellPriceByGrade(int grade, int _sellPrice){
 		return grade * _sellPrice;
+	}
+
+	protected JSONObject getItemJSONObjectFromPath(String path){
+		JSONObject json = new JSONObject();
+		try {
+		InputStream is = GameView_Activity.getContext().getAssets().open(path);
+		BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+		StringBuilder stringBuilder = new StringBuilder();
+		int i = 0;
+
+			while ((i = rd.read()) != -1){
+                stringBuilder.append((char) i );
+
+            }
+
+		json = new JSONObject(stringBuilder.toString());
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}finally{
+			return json;
+		}
+
+	}
+
+	protected void setPricing(Item item){
+		item.sellPrice = getSellPriceByGrade(item.grade, item.getStandardSellPrice());
+		item.buyPrice = getBuyPriceByGrade(item.grade, item.getStandardBuyPrice());
+	}
+
+	public int getSellPrice() {
+		return sellPrice;
+	}
+
+	public int getBuyPrice() {
+		return buyPrice;
+	}
+
+	protected abstract void setType(String type);
+
+	protected abstract void setName(String type);
+
+	protected abstract void setJsonGathered(boolean bool);
+
+	protected abstract void loadImage(Bitmap image);
+
+	protected abstract String getPath();
+
+	protected abstract int getStandardSellPrice();
+
+	protected abstract int getStandardBuyPrice();
+
+	protected abstract void setStandardSellPrice(int i);
+
+	protected abstract void setStandardBuyPrice(int i);
+
+	public abstract boolean isJsonGathered();
+
+	public static Item getNewInstance(Item item){
+		Item newItem = null;
+		try {
+			newItem = item.getClass().newInstance();
+			newItem.setGrade(item.getGrade());
+			newItem.setBuyPrice(item.getBuyPrice());
+			newItem.setSellPrice(item.getSellPrice());
+		}catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}finally {
+			return newItem;
+		}
 	}
 
 

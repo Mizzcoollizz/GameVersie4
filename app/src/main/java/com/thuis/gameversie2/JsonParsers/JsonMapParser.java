@@ -53,9 +53,16 @@ public class JsonMapParser {
     private int map_height = 0;
     private int tile_width = 0;
 
+    /**
+     * Constructor for JsonMapParser.
+     * The path of the json file can be gathered by the map.getPath() method.
+     * If the file is too big to be stored in a string/json object, we are going to use the parseMapAlternatively() method.
+     * Otherwise, the file is read, and a jsonobject is created.
+     * @param context
+     * @param map: map to parse.
+     */
     public JsonMapParser(Context context, Map map){
-        try {
-
+        try{
             this.mapToParse = map;
             this.context = context;
             getMainMapProperties(map.getPath());
@@ -63,12 +70,9 @@ public class JsonMapParser {
             rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             JSONObject completeMapObject = null;
 
-
             try{
                 int size = is.available();
                 if(size < Runtime.getRuntime().freeMemory()) {
-
-
                     bytes = new byte[size];
                     is.read(bytes);
                     completeMapObject = new JSONObject(new String(bytes, "UTF-8"));

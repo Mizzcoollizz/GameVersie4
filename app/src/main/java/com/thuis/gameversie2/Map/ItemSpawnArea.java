@@ -43,15 +43,11 @@ public class ItemSpawnArea extends Interactive {
 
     public void setItem(Spawnable_Item item) {
         this.item = item;
-        MapHandler.getCurrentMap().getCollisionObjects().add(collisionObject);
+        MapHandler.getCurrentMap().addcollisionObject(collisionObject);
     }
 
     public boolean hasItem() {
-        if(this.item == null || this.item.equals(null)){
-            return false;
-        }else{
-            return true;
-        }
+         return this.item != null || !this.item.equals(null);
     }
 
     public Rect getRect() {
@@ -79,6 +75,16 @@ public class ItemSpawnArea extends Interactive {
     @Override
     public void update() {
         //TODO update()
+        if(this.hasItem()){
+            this.item = null;
+        }
+    }
+
+    @Override
+    public void setCollision() {
+        if(this.hasItem()){
+            super.setCollisionObject(new CollisionObject(getXLocation(), getYLocation(), "itemSpawnAreaWithItem", true, getHeight(), getWidth()));
+        }
     }
 
     public boolean hasInteractive() {

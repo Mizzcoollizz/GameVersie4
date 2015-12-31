@@ -12,7 +12,7 @@ import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Item;
-import com.thuis.gameversie2.Items.Rock;
+import com.thuis.gameversie2.Items.Raw_Materials.Rock;
 import com.thuis.gameversie2.Items.Spawnable_Item;
 import com.thuis.gameversie2.Items.Tools.Tool;
 import com.thuis.gameversie2.Map.MapHandler;

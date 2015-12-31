@@ -1,0 +1,16 @@
+{
+  "name": "Tomato",
+  "type": "Crop",
+  "growtime":4,
+  "image": "planten/tomaten/tomaten.png",
+  "stateImages": [
+    "tomaten_groei_stadium1.png",
+    "tomaten_groei_stadium2.png",
+    "tomaten_oogst_stadium.png"
+  ],
+  "sellPrice":200,
+  "buyPrice":400,
+  "season": "Summer",
+  "perennial":true
+
+}

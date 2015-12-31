@@ -1,0 +1,13 @@
+{
+  "name": "Wheat",
+  "type": "Crop",
+  "growtime": 6,
+  "image": "planten/graan/graan.png",
+  "stateImages": [
+    "graan_groei_stadium1.png",
+    "graan_groei_stadium2.png",
+    "graan_groei_stadium3.png",
+    "graan_volgroeid.png"
+  ]
+
+}

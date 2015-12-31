@@ -7,7 +7,5 @@ import android.graphics.Bitmap;
  */
 public interface Spawnable_Item {
 
-    Bitmap getImage();
 
-    void setGrade();
 }

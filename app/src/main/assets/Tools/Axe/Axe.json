@@ -1,0 +1,8 @@
+{
+  "name": "Axe",
+  "type": "Tool",
+  "image": "Tools/Axe/Axe.png",
+  "buyPrice": 2000,
+  "sellPrice": 1000
+
+}

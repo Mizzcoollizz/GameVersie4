@@ -3,7 +3,10 @@ package com.thuis.gameversie2.Interactive;
 import android.graphics.Bitmap;
 
 
+import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Items.Berries.Berry;
+import com.thuis.gameversie2.Items.Item;
+import com.thuis.gameversie2.Items.Tools.Axe;
 import com.thuis.gameversie2.Items.Tools.Tool;
 
 /**
@@ -23,16 +26,28 @@ public class Bush extends Interactive{
         this.berry = _berry;
     }
 
+    private void harvest(){
+        //Todo check create Bush interaction
+        if(regrown){
+            if(GamePanel.getInventory().add(Item.getNewInstance(getBerry()))){
+                this.regrown = false;
+                this.growDay = 0;
+                this.state = 0;
+            }
+        }
+    }
 
 
     @Override
     public void onInteraction() {
-        //Todo create Bush interaction
+        harvest();
     }
 
     @Override
     public void onInteraction(Tool tool) {
-
+        if(tool instanceof Axe){
+            //TODO remove this bush
+        }
     }
 
     @Override
@@ -42,6 +57,11 @@ public class Bush extends Interactive{
 
     @Override
     public void update() {
+
+    }
+
+    @Override
+    public void setCollision() {
 
     }
 

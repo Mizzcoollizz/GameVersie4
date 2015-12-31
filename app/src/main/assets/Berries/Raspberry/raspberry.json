@@ -1,8 +1,9 @@
 {
-"name": "raspberry",
-"growtime": 3,
-"image": "raspberry.png",
-"stateImages": [
+  "name": "Raspberry",
+  "type": "Berry",
+  "growtime": 3,
+  "image": "Berries/Raspberry/raspberry.png",
+  "stateImages": [
   "raspberry_bush1.png",
   "raspberry_bush2.png"
 ]

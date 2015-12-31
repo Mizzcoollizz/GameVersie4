@@ -1,0 +1,6 @@
+{"name":"Rock",
+  "type":"Raw Material",
+  "image":"Materials/Raw_Materials/Rock/Rock.png",
+  "sellPrice":5,
+  "buyPrice":10
+}

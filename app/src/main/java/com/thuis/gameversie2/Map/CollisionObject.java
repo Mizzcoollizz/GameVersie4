@@ -11,7 +11,6 @@ import com.thuis.gameversie2.GamePanel;
  */
 public class CollisionObject {
 
-
     private long xLocation = 0;
     private long yLocation = 0;
     private String type = null;
@@ -36,14 +35,14 @@ public class CollisionObject {
         this.height = height;
         this.width = width;
     }
-
-    public CollisionObject(long xLocation, long yLocation, String type, boolean lowObject) {
-        this.xLocation = xLocation;
-        this.yLocation = yLocation;
-        this.type = type;
-        this.lowObject = lowObject;
-
-    }
+//
+//    public CollisionObject(long xLocation, long yLocation, String type, boolean lowObject) {
+//        this.xLocation = xLocation;
+//        this.yLocation = yLocation;
+//        this.type = type;
+//        this.lowObject = lowObject;
+//
+//    }
 
     public long getXLocation() {
         return xLocation;

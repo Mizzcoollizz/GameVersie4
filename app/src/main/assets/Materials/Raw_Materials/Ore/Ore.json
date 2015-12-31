@@ -1,0 +1,7 @@
+{"name":"Ore",
+  "type":"Raw Material",
+  "image":"Materials/Raw_Materials/OreOre.png",
+  "sellPrice":5,
+  "buyPrice":10
+
+}

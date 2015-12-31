@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.util.Log;
 
+import com.thuis.gameversie2.Items.Crops.Crop;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 
@@ -23,13 +24,13 @@ import java.nio.charset.Charset;
  */
 public abstract class Berry extends Item {
 
-    protected abstract String getPath();
+
 
     protected abstract void setGrowStateImages(Bitmap[] growStateImagesPaths);
 
     protected abstract void setGrowTime(int growTime);
 
-    protected abstract void setItemImagePath(String itemImagePath);
+    protected abstract void loadBerryImage(Bitmap image);
 
 
 //    public Bitmap getGrowStateImages(int index) {
@@ -43,41 +44,43 @@ public abstract class Berry extends Item {
 //    }
 
     /**
-     * Sets the growTime, itemImagePath and the growStateImages using the information given
+     * Sets the growTime, itemImage and the growStateImages using the information given
      * by the json.
      */
     protected void getBerryJson(Berry berry){
-        try{
-            InputStream is = GameView_Activity.getContext().getAssets().open(berry.getPath());
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
-            StringBuilder stringBuilder = new StringBuilder();
-            int i = 0;
-            while ((i = rd.read()) != -1){
-                stringBuilder.append((char) i );
+        try {
+            if (berry.isJsonGathered()) {
+                return;
             }
-            JSONObject json = new JSONObject(stringBuilder.toString());
+                JSONObject json = getItemJSONObjectFromPath(berry.getPath());
+                int growtime = json.getInt("growtime");
+                berry.setGrowTime(growtime);
+                berry.setName(json.getString("name"));
+                berry.setType(json.getString("type"));
+                berry.loadImage(super.getJsonImage(json.getString("image")));
 
-            berry.setGrowTime(json.getInt("growtime"));
-            berry.name = name;
-            berry.setItemImagePath(json.getString("image"));
-
-            JSONArray growStateImagesInJson = json.getJSONArray("stateImages");
-            Bitmap[] growStateImages = new Bitmap[growStateImagesInJson.length()];
-            for(int image = 0; image < growStateImagesInJson.length(); image++){
-                growStateImages[image] =
-                        super.getJsonImage(
-                                berry.getPath() + "/" + growStateImagesInJson.get(image).toString());
+                JSONArray growStateImagesInJson = json.getJSONArray("stateImages");
+                Bitmap[] growStateImages = new Bitmap[growStateImagesInJson.length()];
+                for (int image = 0; image < growStateImagesInJson.length(); image++) {
+                    growStateImages[image] =
+                            super.getJsonImage(
+                                    berry.getPath() + "/" + growStateImagesInJson.get(image).toString());
+                }
+                berry.setGrowStateImages(growStateImages);
+                int growstages = growStateImages.length;
+                berry.setGrowTimePerStage(Crop.calculateGrowTimePerStage(growstages, growtime));
+                super.setPricing(berry);
+                berry.setJsonGathered(true);
+            }catch(JSONException e){
+                e.printStackTrace();
+                Log.i("tag", e.getMessage());
             }
-            berry.setGrowStateImages(growStateImages);
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.i("tag", e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
 
     public abstract Bitmap getGrowStateImages(int state);
-}
+
+    protected abstract void setGrowTimePerStage(int i);
+    protected abstract int getGrowTimePerStage();
+
+  }

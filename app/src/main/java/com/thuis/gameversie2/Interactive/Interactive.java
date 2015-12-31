@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Rect;
 
 import com.thuis.gameversie2.Items.Tools.Tool;
+import com.thuis.gameversie2.Map.CollisionObject;
+import com.thuis.gameversie2.Map.MapHandler;
 
 /**
  * Created by Elize on 15-8-2015.
@@ -13,6 +15,7 @@ public abstract class Interactive {
     long yLocation = 0;
     int width = 0;
     int height = 0;
+    private CollisionObject collisionObject = null;
 
     public Interactive(long xLocation, long yLocation, int width, int height) {
         this.xLocation = xLocation;
@@ -45,10 +48,19 @@ public abstract class Interactive {
 
     public abstract void onInteraction(Tool tool);
 
-
     public abstract Bitmap getImage();
 
     public abstract void update();
+
+    protected  void setCollisionObject(CollisionObject object){
+        if(this.collisionObject != null){
+            MapHandler.getCurrentMap().removeCollisionObject(this.collisionObject);
+        }
+        this.collisionObject = object;
+        MapHandler.getCurrentMap().addcollisionObject(collisionObject);
+    };
+
+    public abstract void setCollision();
 
 
 }

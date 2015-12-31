@@ -1,0 +1,6 @@
+{"name":"Stone",
+  "type":"Material",
+  "image":"Materials/Stone/Stone.png",
+  "sellPrice":20,
+  "buyPrice":75
+}
