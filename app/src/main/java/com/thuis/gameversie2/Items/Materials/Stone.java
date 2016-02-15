@@ -2,14 +2,11 @@ package com.thuis.gameversie2.Items.Materials;
 
 import android.graphics.Bitmap;
 
-import com.thuis.gameversie2.Items.Raw_Materials.Rock;
-import com.thuis.gameversie2.R;
-
 public class Stone extends Material {
 
 	private static Bitmap image = null;
 	private static Bitmap inventoryImage = null;
-	private static final String PATH = "Materials/Stone/Stone.json";
+	private static final String PATH = "materials/stone/stone.json";
 	private static String name = null;
 	private static String type = null;
 	private static boolean jsonGathered = false;
@@ -33,7 +30,7 @@ public class Stone extends Material {
 
 	@Override
 	public void setInventoryImage() {
-		super.createInventoryImage(image);
+		inventoryImage = super.createInventoryImage(image);
 	}
 
 

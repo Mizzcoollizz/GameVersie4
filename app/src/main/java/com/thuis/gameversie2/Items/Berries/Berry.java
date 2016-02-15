@@ -64,7 +64,7 @@ public abstract class Berry extends Item {
                 for (int image = 0; image < growStateImagesInJson.length(); image++) {
                     growStateImages[image] =
                             super.getJsonImage(
-                                    berry.getPath() + "/" + growStateImagesInJson.get(image).toString());
+                                    growStateImagesInJson.get(image).toString());
                 }
                 berry.setGrowStateImages(growStateImages);
                 int growstages = growStateImages.length;

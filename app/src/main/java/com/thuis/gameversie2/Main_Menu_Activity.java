@@ -4,11 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.thuis.gameversie2.Character.MainCharacter;
+import com.thuis.gameversie2.Inventory_System.Inventory;
+import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
+import com.thuis.gameversie2.Items.Raw_Materials.Rock;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
+
+import java.io.IOException;
 
 public class Main_Menu_Activity extends AppCompatActivity {
 
@@ -23,6 +30,7 @@ public class Main_Menu_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         context = this;
         setContentView(R.layout.activity_main__menu);
+        GamePanel.setCurrentContext(this);
     }
 
     @Override
@@ -47,10 +55,16 @@ public class Main_Menu_Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void startNewGame(View v){
+    public void startNewGame(View v) {
+        GamePanel.setPlayer(new MainCharacter("male", "human", "me", getContext()));
+        GamePanel.setInventory(new Inventory());
 
-        Intent intent = new Intent(this, GameView_Activity.class);
+        //Intent intent = new Intent(this, GameView_Activity.class);
+        GamePanel.getInventory().add(new Rock());
+        GamePanel.getPlayer().setItemHolding(new Rock());
+        Intent intent = new Intent(this, Inventory_Activity.class);
         startActivity(intent);
-
     }
+
+
 }

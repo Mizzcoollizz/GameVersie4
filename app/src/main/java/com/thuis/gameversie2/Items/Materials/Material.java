@@ -1,5 +1,7 @@
 package com.thuis.gameversie2.Items.Materials;
 
+import android.util.Log;
+
 import com.thuis.gameversie2.Items.Item;
 
 import org.json.JSONException;
@@ -13,8 +15,8 @@ public abstract class Material extends Item {
         }else{
             try {
                 JSONObject json = super.getItemJSONObjectFromPath(material.getPath());
-                material.loadImage(getJsonImage(json.getString("image")));
                 material.setStandardBuyPrice(json.getInt("buyPrice"));
+                material.loadImage(getJsonImage(json.getString("image")));
                 material.setStandardBuyPrice(json.getInt("sellPrice"));
                 material.setJsonGathered(true);
                 material.setType(json.getString("type"));

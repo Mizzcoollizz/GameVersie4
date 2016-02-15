@@ -2,12 +2,10 @@ package com.thuis.gameversie2.Items.Raw_Materials;
 
 import android.graphics.Bitmap;
 
-import com.thuis.gameversie2.Items.Materials.Material;
-
 public class Ore extends RawMaterial {
 	private static Bitmap image = null;
 	private static Bitmap inventoryImage = null;
-	private static final String PATH = "Materials/Raw_Materials/Ore/Ore.json";
+	private static final String PATH = "materials/raw_materials/ore/ore.json";
 	private static String name = null;
 	private static String type = null;
 	private static boolean jsonGathered = false;
@@ -32,7 +30,7 @@ public class Ore extends RawMaterial {
 
 	@Override
 	public void setInventoryImage() {
-		super.createInventoryImage(image);
+		inventoryImage = super.createInventoryImage(image);
 	}
 
 

@@ -1,10 +1,6 @@
 package com.thuis.gameversie2.Items.Tools;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.thuis.gameversie2.Items.Item;
-import com.thuis.gameversie2.Items.Tools.Tool;
 
 /**
  * Created by Elize on 7-9-2015.
@@ -18,7 +14,7 @@ public class Axe extends Tool {
     private static String NAME = null;
     private static String TYPE = null;
     private boolean jsonGathered = false;
-    private static final String PATH = "Tools/Axe/Axe.json";
+    private static final String PATH = "Tools/axe/axe.json";
 
 
     public Axe(int grade){

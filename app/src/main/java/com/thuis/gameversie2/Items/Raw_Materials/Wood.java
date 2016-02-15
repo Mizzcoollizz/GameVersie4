@@ -2,17 +2,13 @@ package com.thuis.gameversie2.Items.Raw_Materials;
 
 import android.graphics.Bitmap;
 
-import com.thuis.gameversie2.Items.Materials.Material;
-import com.thuis.gameversie2.Items.Raw_Materials.RawMaterial;
 import com.thuis.gameversie2.Items.Spawnable_Item;
-
-import java.util.Random;
 
 public class Wood extends RawMaterial implements Spawnable_Item {
 
 	private static Bitmap image = null;
 	private static Bitmap inventoryImage = null;
-	private static final String PATH = "Materials/Raw_Materials/Wood/Wood.json";
+	private static final String PATH = "materials/raw_materials/wood/wood.json";
 	private static String NAME = null;
 	private static String TYPE = null;
 	private static boolean jsonGathered = false;
@@ -36,7 +32,7 @@ public class Wood extends RawMaterial implements Spawnable_Item {
 
 	@Override
 	public void setInventoryImage() {
-		super.createInventoryImage(image);
+		inventoryImage = super.createInventoryImage(image);
 	}
 
 

@@ -1,6 +1,7 @@
 package com.thuis.gameversie2.Items.Raw_Materials;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import com.thuis.gameversie2.Items.Materials.Material;
 import com.thuis.gameversie2.Items.Materials.Stone;
@@ -12,7 +13,8 @@ public class Rock extends RawMaterial implements Spawnable_Item {
 
 	private static Bitmap image = null;
 	private static Bitmap inventoryImage = null;
-	private static final String PATH = "Materials/Raw_Materials/Rock/Rock.json";
+	private static final String PATH = "materials/raw_materials/rock/rock.json";
+	//private static final String PATH = "rock.json";
 	private static String NAME = null;
 	private static String TYPE = null;
 	private static boolean jsonGathered = false;
@@ -36,7 +38,7 @@ public class Rock extends RawMaterial implements Spawnable_Item {
 
 	@Override
 	public void setInventoryImage() {
-		super.createInventoryImage(image);
+		inventoryImage = super.createInventoryImage(image);
 	}
 
 

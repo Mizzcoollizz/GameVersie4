@@ -70,7 +70,7 @@ public class MainCharacter {
 
 	public boolean walking = false;
 
-	private Item itemHolding = new Rock();
+	private Item itemHolding = null;
 
 	private Tool toolHolding = null;
 
@@ -273,10 +273,6 @@ public class MainCharacter {
 
 	public String getHairColor() {
 		return hairColor;
-	}
-
-	public void setItemHolding(Spawnable_Item itemHolding) {
-		this.itemHolding = (Item) itemHolding;
 	}
 
 	public boolean getOnTouch(MotionEvent event) {

@@ -47,13 +47,13 @@ public class Tomato extends Crop {
     }
 
     @Override
-    protected void setType(String type) {
-        type = type;
+    protected void setType(String _type) {
+        type = _type;
     }
 
     @Override
-    protected void setName(String name) {
-        name = name;
+    protected void setName(String _name) {
+        name = _name;
     }
 
     @Override
@@ -102,8 +102,8 @@ public class Tomato extends Crop {
     }
 
     @Override
-    protected void setGrowStateImages(Bitmap[] growStateImages) {
-        this.growStateImages = growStateImages;
+    protected void setGrowStateImages(Bitmap[] _growStateImages) {
+        growStateImages = _growStateImages;
     }
 
     @Override
@@ -129,7 +129,7 @@ public class Tomato extends Crop {
 
     @Override
     protected void setGrowTime(int growtime) {
-        this.totalGrowTimeInDays = growtime;
+        totalGrowTimeInDays = growtime;
     }
 
     @Override

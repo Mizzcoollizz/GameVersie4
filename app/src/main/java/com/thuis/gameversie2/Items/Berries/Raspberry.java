@@ -1,20 +1,6 @@
 package com.thuis.gameversie2.Items.Berries;
 
 import android.graphics.Bitmap;
-import android.util.Log;
-
-import com.thuis.gameversie2.MapScreen.GameView_Activity;
-import com.thuis.gameversie2.R;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 
 /**
  * Created by Elize on 24-10-2015.
@@ -25,7 +11,7 @@ public class Raspberry extends Berry {
     private static int growTime = 0;
     private static Bitmap image = null;
     private static Bitmap inventoryImage = null;
-    private static final String PATH = "Berries/Raspberry/raspberry.json";
+    private static final String PATH = "berries/raspberry/raspberry.json";
     private static String name = "Raspberry";
     private static String type = "Berry";
     private static boolean jsonGathered = false;

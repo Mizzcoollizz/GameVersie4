@@ -1,5 +1,7 @@
 package com.thuis.gameversie2;
 
+import android.content.Context;
+
 import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.Inventory_System.Inventory;
 import com.thuis.gameversie2.Items.Raw_Materials.Rock;
@@ -10,6 +12,8 @@ import com.thuis.gameversie2.Map.Maps.PlayerHomeMap;
  * Created by Elize on 6-8-2015.
  */
 public class GamePanel {
+
+    private static Context currentContext = null;
 
     private static Class[] spawnables = {Rock.class, Wood.class};
 
@@ -50,5 +54,13 @@ public class GamePanel {
 
     public static Inventory getInventory() {
         return inventory;
+    }
+
+    public static Context getCurrentContext() {
+        return currentContext;
+    }
+
+    public static void setCurrentContext(Context currentContext) {
+        GamePanel.currentContext = currentContext;
     }
 }

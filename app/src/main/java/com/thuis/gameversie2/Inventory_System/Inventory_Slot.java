@@ -34,11 +34,7 @@ public class Inventory_Slot {
     }
 
     public boolean hasRoom() {
-        if(items.size() >= 9){
-            return false;
-        }else{
-            return true;
-        }
+        return items.size() < 9;
     }
 
     public void add(Item item) {

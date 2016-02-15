@@ -38,8 +38,8 @@ public class GameView_Activity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameview_activity);
         context = this;
-        GamePanel.setPlayer(new MainCharacter("male", "human", "me", getContext()));
-        GamePanel.setInventory(new Inventory());
+        GamePanel.setCurrentContext(this);
+
         MapHandler.setFarm();
     }
 
@@ -89,6 +89,7 @@ public class GameView_Activity extends Activity {
     protected void onPostResume() {
         super.onPostResume();
         setButtons();
+        GamePanel.setCurrentContext(this);
     }
 
     public void goToInventory(View view){

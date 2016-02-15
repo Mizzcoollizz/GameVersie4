@@ -9,7 +9,7 @@ public class Iron_Ore extends RawMaterial {
 
     private static Bitmap image = null;
     private static Bitmap inventoryImage = null;
-    private static final String PATH = "Materials/Raw_Materials/Ore/Iron_Ore/Iron_Ore.json";
+    private static final String PATH = "materials/raw_materials/ore/iron_ore/iron_ore.json";
     private static String NAME = null;
     private static String TYPE = null;
     private static boolean jsonGathered = false;
@@ -34,7 +34,7 @@ public class Iron_Ore extends RawMaterial {
 
     @Override
     public void setInventoryImage() {
-        super.createInventoryImage(image);
+        inventoryImage = super.createInventoryImage(image);
     }
 
 

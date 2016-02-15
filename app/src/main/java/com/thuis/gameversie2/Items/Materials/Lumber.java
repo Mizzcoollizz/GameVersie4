@@ -2,13 +2,11 @@ package com.thuis.gameversie2.Items.Materials;
 
 import android.graphics.Bitmap;
 
-import com.thuis.gameversie2.Items.Materials.Material;
-
 public class Lumber extends Material {
 
     private static Bitmap image = null;
     private static Bitmap inventoryImage = null;
-    private static final String PATH = "Materials/Lumber/Lumber.json";
+    private static final String PATH = "materials/lumber/lumber.json";
     private static String name = null;
     private static String type = null;
     private static boolean jsonGathered = false;
@@ -33,7 +31,7 @@ public class Lumber extends Material {
 
     @Override
     public void setInventoryImage() {
-        super.createInventoryImage(image);
+        inventoryImage = super.createInventoryImage(image);
     }
 
 

@@ -2,6 +2,7 @@ package com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners
 
 import android.app.Activity;
 import android.content.ClipData;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -17,6 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.thuis.gameversie2.GamePanel;
+import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryAlternativeDropView;
+import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryDropView;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryItemGridView;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.R;
@@ -28,29 +31,33 @@ public class OnItemTouchListener implements View.OnTouchListener {
 
     private boolean selected = false;
     ViewGroup parent = null;
+    ViewGroup baseView = null;
 
-    public OnItemTouchListener(ViewGroup parent){
+    public OnItemTouchListener(Context context, ViewGroup parent){
         this.parent = parent;
+        this.baseView = (ViewGroup)((Activity) context).findViewById(R.id.parentViewInventoryActivity);
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                onItemSelect((InventoryItemGridView) v);
+                onItemSelect((InventoryDropView) v);
                 selected = true;
                 return true;
             case MotionEvent.ACTION_MOVE:
-                if(selected && checkItem(v)){
-                    ClipData data = ClipData.newPlainText((String) v.getTag(),
+                if(selected && checkHasItem(v)){
+                    View viewToDrag = v;
+                    ClipData data = ClipData.newPlainText((String) viewToDrag.getTag(),
                             String.valueOf(0));
-                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(v);
-                    parent.startDrag(data, shadow, null, 0);
-                    OnInventoryItemDragListener.setViewDragging(v);
+                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(viewToDrag);
+                    viewToDrag.startDrag(data, shadow, viewToDrag, 0);
+                    OnInventoryItemDragListener.setViewDragging(viewToDrag);
                 }else{
-                    GridView gridView = (GridView) parent;
-                    gridView.scrollBy(0, InventoryItemGridView.getWIDTH());
-
+                    if(v instanceof InventoryItemGridView) {
+                        GridView gridView = (GridView) parent;
+                        gridView.scrollBy(0, InventoryItemGridView.getWIDTH());
+                    }
                 }
                 return true;
             case MotionEvent.ACTION_UP:
@@ -61,37 +68,38 @@ public class OnItemTouchListener implements View.OnTouchListener {
         }
     }
 
-    private boolean checkItem(View v) {
-        InventoryItemGridView view = (InventoryItemGridView) v;
-        try{
-            if(GamePanel.getInventory().getAllSlots().get(view.getPosition()).getAmount() > 0){
-                return true;
-            }else{
-                return false;
-            }
-
-        }catch (NullPointerException ex){
+    //Check if the view is not empty.
+    private boolean checkHasItem(View v) {
+        if(v instanceof InventoryItemGridView) {
+            InventoryItemGridView view = (InventoryItemGridView) v;
+            return view.checkHasItem();
+        }else if(v instanceof InventoryAlternativeDropView){
+            InventoryAlternativeDropView view = (InventoryAlternativeDropView) v;
+            return view.checkHasItem();
+        }else{
             return false;
         }
     }
 
-    private void onItemSelect(InventoryItemGridView view){
+    private void onItemSelect(InventoryDropView view){
+            view.onItemSelect();
+    }
 
-        view.setBackgroundColor(Color.GREEN);
+    private void onGridViewItemSelect(InventoryItemGridView view){
+
         View activity = parent.getRootView();
         int position = view.getPosition();
-
         TextView nameTextView = (TextView) activity.findViewById(R.id.nameTextView_Inventory_input);
         TextView typeTextView = (TextView) activity.findViewById(R.id.typeTextView_Inventory_input);
         TextView gradeTextView = (TextView) activity.findViewById(R.id.gradeTextView_Inventory_input);
         ImageView imageView = (ImageView) activity.findViewById(R.id.ImageView_Selected_Item);
         try {
             //When the user clicks on an item, the item background will be green.
-            //The other elements have a transparant background.
+            //The other elements have a transparent background.
             for(int i = 0; i < parent.getChildCount(); i++){
                 parent.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
             }
-            view.setBackgroundColor(Color.GREEN);
+            view.setBackgroundColor(Color.RED);
 
             Item item = GamePanel.getInventory().getAllSlots().get(position).getItem();
 
@@ -121,6 +129,7 @@ public class OnItemTouchListener implements View.OnTouchListener {
             imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
             imageView.setImageBitmap(imageBitmap);
         }
+
     }
 
 

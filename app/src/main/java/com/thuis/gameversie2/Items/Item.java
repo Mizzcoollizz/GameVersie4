@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.util.Log;
 
 import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Main_Menu_Activity;
@@ -66,7 +67,8 @@ public abstract class Item {
 			setBorderImageBitmap();
 			Bitmap newImage = borderImageBitmap.copy(Bitmap.Config.ARGB_4444, true);
 			Canvas canvas = new Canvas(newImage);
-			canvas.drawBitmap(image, 0, 0, null);
+			Bitmap scaledImage = Bitmap.createScaledBitmap(image, newImage.getWidth(), newImage.getHeight(),false);
+			canvas.drawBitmap(scaledImage, 0, 0, null);
 
 		return newImage;
 
@@ -100,7 +102,6 @@ public abstract class Item {
 	public static Bitmap getJsonImage(String path){
 		InputStream is  = null;
 		try {
-			System.out.println("Image" + path);
 			is = Main_Menu_Activity.getContext().getAssets().open(path);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -121,18 +122,16 @@ public abstract class Item {
 	}
 
 	protected JSONObject getItemJSONObjectFromPath(String path){
+
 		JSONObject json = new JSONObject();
 		try {
-		InputStream is = GameView_Activity.getContext().getAssets().open(path);
+		InputStream is = GamePanel.getCurrentContext().getApplicationContext().getAssets().open(path);
 		BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
 		StringBuilder stringBuilder = new StringBuilder();
 		int i = 0;
-
 			while ((i = rd.read()) != -1){
                 stringBuilder.append((char) i );
-
             }
-
 		json = new JSONObject(stringBuilder.toString());
 
 		} catch (IOException e) {

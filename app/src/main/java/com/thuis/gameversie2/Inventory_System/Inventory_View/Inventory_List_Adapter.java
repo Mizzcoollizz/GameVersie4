@@ -25,6 +25,7 @@ import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Inventory_System.Inventory;
 import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener;
+import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener2;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnItemTouchListener;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.R;
@@ -64,37 +65,6 @@ public class Inventory_List_Adapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         InventoryItemGridView returnView = new InventoryItemGridView(this.context, position, parent);
-//        returnView = returnView.getView(position);
-
-
-//
-//        Bitmap bitmapImage = Bitmap.createBitmap(72, 72, Bitmap.Config.ARGB_8888);
-//        bitmapImage = bitmapImage.copy(Bitmap.Config.ARGB_4444, true);
-//        Canvas canvas = new Canvas(bitmapImage);
-//
-//        try {
-//            Inventory_Slot inventory_slot = slots.get(position);
-//            int amount = inventory_slot.getAmount();
-//            Bitmap image = inventory_slot.getItem().getImage();
-//            if (image != null) {
-//                canvas.drawBitmap(image, 15, 15, null);
-//            }
-//            if (amount > 0) {
-//                Paint paint = new Paint();
-//                paint.setColor(Color.BLACK);
-//                paint.setTextSize(15);
-//                canvas.drawText(Integer.toString(amount), 60, 70, paint);
-//            }
-//
-//        }catch(NullPointerException exception){
-//            exception.printStackTrace();
-//            imageView.setImageBitmap(null);
-//
-//        }
-//
-//        imageView.setImageBitmap(bitmapImage);
-
-
         return returnView;
     }
 }

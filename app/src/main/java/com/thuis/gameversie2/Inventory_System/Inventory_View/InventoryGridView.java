@@ -6,16 +6,19 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.GridView;
 
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.ItemSelectListener;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener;
+import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener2;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnItemTouchListener;
 
 /**
  * Created by Elize on 1-9-2015.
  */
-public class InventoryGridView extends GridView {
+public class InventoryGridView extends GridView{
 
     public InventoryGridView(Context context) {
         super(context);
@@ -48,7 +51,6 @@ public class InventoryGridView extends GridView {
 
     private void init(Context context){
         setAdapter(new Inventory_List_Adapter(context));
-        setOnDragListener(new OnInventoryItemDragListener(this));
         setOnItemClickListener(new ItemSelectListener((Activity) this.getContext()));
     }
 
