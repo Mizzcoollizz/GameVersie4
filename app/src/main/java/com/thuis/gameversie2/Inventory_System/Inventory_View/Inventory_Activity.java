@@ -4,16 +4,17 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener;
-import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener2;
+import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.R;
 
 
@@ -33,20 +34,9 @@ public class Inventory_Activity extends Activity {
         View v = ((ViewGroup)findViewById(android.R.id.content)).getChildAt(0);
         GridView gridView = (GridView) findViewById(R.id.inventoryGridView);
         View baseView = findViewById(R.id.parentViewInventoryActivity);
-
-        baseView.setOnDragListener(new OnInventoryItemDragListener2((ViewGroup) baseView, this));
+        baseView.setOnDragListener(new OnInventoryItemDragListener((ViewGroup) baseView, this));
 
         View parentView = findViewById(R.id.parentViewInventoryActivity);
-        //parentView.setOnDragListener(new OnInventoryItemDragListener(gridView, (ViewGroup) parentView));
-//        v.setOnDragListener(new View.OnDragListener() {
-//            @Override
-//            public boolean onDrag(View v, DragEvent event) {
-//                //TODO Working ;)
-//                //TODO Just add the next drop grids :/
-//
-//                return false;
-//            }
-//        });
     }
 
     @Override
@@ -78,6 +68,67 @@ public class Inventory_Activity extends Activity {
 
         toolHoldingView.setImageBitmap(GamePanel.getPlayer().getToolHoldingInventoryImage());
 
+    }
+
+    public static void setAllBackgroundsTransparent(ViewGroup gridView){
+        //When the user clicks on an item, the item background will be green.
+        //The other elements have a transparent background.
+      for(int i = 0; i < gridView.getChildCount(); i++){
+        gridView.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        itemHoldingView.setBackgroundColor(Color.TRANSPARENT);
+        toolHoldingView.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+    public static void onInventoryItemSelect(InventoryDropView inventoryDropView){
+
+        View view = (View) inventoryDropView;
+        View activity = view.getRootView();
+        TextView nameTextView = (TextView) activity.findViewById(R.id.nameTextView_Inventory_input);
+        TextView typeTextView = (TextView) activity.findViewById(R.id.typeTextView_Inventory_input);
+        TextView gradeTextView = (TextView) activity.findViewById(R.id.gradeTextView_Inventory_input);
+        ImageView imageView = (ImageView) activity.findViewById(R.id.ImageView_Selected_Item);
+        try {
+            ViewGroup gridView = (ViewGroup) activity.findViewById(R.id.inventoryGridView);
+            Inventory_Activity.setAllBackgroundsTransparent(gridView);
+
+            view.setBackgroundColor(Color.RED);
+
+            Item item = null;
+            if(inventoryDropView instanceof InventoryAlternativeDropView) {
+                item = ((InventoryAlternativeDropView)inventoryDropView).getItemSlot().getItem();
+            }else if(inventoryDropView instanceof InventoryItemGridView){
+                InventoryItemGridView inventoryItemGridView = (InventoryItemGridView) inventoryDropView;
+                item = GamePanel.getInventory().getAllSlots().get(inventoryItemGridView.getPosition()).getItem();
+            }
+
+            if (item != null && !item.equals(null) && view != null) {
+                nameTextView.setText(item.getName());
+                typeTextView.setText(item.getClass().getSimpleName());
+                gradeTextView.setText(Integer.toString(item.getGrade()));
+
+                Bitmap imageBitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.inventory_item_border);
+                imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
+
+                imageBitmap = imageBitmap.copy(Bitmap.Config.ARGB_4444, true);
+                Canvas canvas = new Canvas(imageBitmap);
+                Bitmap itemImage = Bitmap.createScaledBitmap(item.getImage(), 92, 92, false);
+                canvas.drawBitmap(itemImage, 0, 0, null);
+                imageView.setImageBitmap(imageBitmap);
+            }else{
+                throw new NullPointerException();
+            }
+
+        }catch (NullPointerException ex){
+            ex.printStackTrace();
+            nameTextView.setText(null);
+            typeTextView.setText(null);
+            gradeTextView.setText(null);
+            Bitmap imageBitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.inventory_item_border);
+            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
+            imageView.setImageBitmap(imageBitmap);
+        }
     }
 
 

@@ -5,6 +5,7 @@ import android.graphics.Rect;
 
 import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Interactive.Interactive;
+import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.Items.Spawnable_Item;
 import com.thuis.gameversie2.Items.Tools.Tool;
@@ -58,7 +59,7 @@ public class ItemSpawnArea extends Interactive {
     @Override
     public void onInteraction() {
         if(item != null ){
-            GamePanel.getPlayer().setItemHolding((Item) item);
+            GamePanel.getPlayer().setItemHolding(new Inventory_Slot((Item) item));
             item = null;
         }
     }

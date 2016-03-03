@@ -2,6 +2,7 @@ package com.thuis.gameversie2.Inventory_System;
 
 import android.util.Log;
 
+import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryDropView;
 import com.thuis.gameversie2.Items.Item;
 
 import java.util.ArrayList;
@@ -91,6 +92,21 @@ public class Inventory {
                     }
             }
         }
+    }
+
+    public void putItem(Inventory_Slot itemSlot, int location){
+       int inventory_slot_collection = location / 20;
+       int locationInSlotCollection = location % 20;
+       currentInventory.get(inventory_slot_collection).getSlots()[locationInSlotCollection] = itemSlot;
+    }
+
+    public boolean mergeInventorySlots(InventoryDropView viewDragging, InventoryDropView dropView){
+        Inventory_Slot draggingInventorySlot = viewDragging.getItemSlot();
+        Inventory_Slot dropViewInventorySlot = dropView.getItemSlot();
+        while(dropViewInventorySlot.hasRoom()){
+            dropViewInventorySlot.add(draggingInventorySlot.getAndRemoveFirst());
+        }
+        return true;
     }
 
 }

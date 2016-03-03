@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.view.MotionEvent;
 
 import com.thuis.gameversie2.GamePanel;
+import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Item;
@@ -70,15 +71,15 @@ public class MainCharacter {
 
 	public boolean walking = false;
 
-	private Item itemHolding = null;
+	private Inventory_Slot itemHolding = null;
 
 	private Tool toolHolding = null;
 
-	public void setItemHolding(Item itemHolding) {
+	public void setItemHolding(Inventory_Slot itemHolding) {
 		this.itemHolding = itemHolding;
 	}
 
-	public Item getItemHolding(){
+	public Inventory_Slot getItemHolding(){
 		return itemHolding;
 	}
 
@@ -241,8 +242,8 @@ public class MainCharacter {
 	}
 
 	private void drawItemHolding(Canvas canvas){
-		if(itemHolding != null){
-			Bitmap bitmap = itemHolding.getImage();
+		if(itemHolding != null && !itemHolding.isEmpty()){
+			Bitmap bitmap = itemHolding.getItem().getImage();
 			canvas.drawBitmap(
 					bitmap,
 					mapX - MapSurfaceView.getScreenX() - bitmap.getWidth() / 2,
@@ -293,7 +294,7 @@ public class MainCharacter {
 			Intent intent = new Intent(GameView_Activity.getContext(), Inventory_Activity.class);
 			GameView_Activity.getContext().startActivity(intent);
 		}else if(!itemHolding.equals(null)){
-			if(GamePanel.getInventory().add(getItemHolding())){
+			if(GamePanel.getInventory().add(getItemHolding().getItem())){
 				this.itemHolding = null;
 			}else{
 				//TODO error message!
@@ -328,11 +329,10 @@ public class MainCharacter {
 
 	public Bitmap getItemHoldingInventoryImage() {
 		if(itemHolding != null){
-			return itemHolding.getInventoryImage();
+			return itemHolding.getItem().getInventoryImage();
 		}else{
 			return Item.borderImageBitmap;
 		}
-
 	}
 
 	public Bitmap getToolHoldingInventoryImage() {

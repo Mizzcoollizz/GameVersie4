@@ -60,6 +60,10 @@ public abstract class Item {
 		return false;
 	}
 
+	/**
+	 * This method is used for getting the items image plus the inventory border
+	 * @return the inventory image of the item
+	 */
 	public abstract Bitmap getInventoryImage();
 	public abstract void setInventoryImage();
 
@@ -71,9 +75,12 @@ public abstract class Item {
 			canvas.drawBitmap(scaledImage, 0, 0, null);
 
 		return newImage;
-
 	}
 
+	/**
+	 * This method is used for getting the image of the item
+	 * @return the items bitmap
+	 */
 	public abstract Bitmap getImage();
 
 	public Bitmap getImageFromResource(int id){
@@ -81,8 +88,12 @@ public abstract class Item {
 	};
 
 	public boolean isEqualItem(Item item){
-		if(this.grade == item.grade && this.getClass().equals(item.getClass())){
-			return true;
+		if(item != null) {
+			if (this.grade == item.grade && this.getClass().equals(item.getClass())) {
+				return true;
+			} else {
+				return false;
+			}
 		}else{
 			return false;
 		}

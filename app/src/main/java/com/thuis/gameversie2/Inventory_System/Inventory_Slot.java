@@ -56,4 +56,22 @@ public class Inventory_Slot {
             return 0;
         }
     }
+
+    public void removeItems() {
+        this.items = new ArrayList<>();
+    }
+
+    public Item getAndRemoveFirst() {
+        Item first = items.get(0);
+        items.remove(0);
+        return first;
+    }
+
+    /**
+     * Method for checking if the inventory slot is empty
+     * @return true if the the slot is empty
+     */
+    public boolean isEmpty(){
+        return items.isEmpty();
+    }
 }

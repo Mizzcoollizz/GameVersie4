@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.Inventory_System.Inventory;
+import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Raw_Materials.Rock;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
@@ -61,8 +62,8 @@ public class Main_Menu_Activity extends AppCompatActivity {
 
         //Intent intent = new Intent(this, GameView_Activity.class);
         GamePanel.getInventory().add(new Rock());
-        GamePanel.getPlayer().setItemHolding(new Rock());
-        Intent intent = new Intent(this, Inventory_Activity.class);
+        GamePanel.getPlayer().setItemHolding(new Inventory_Slot(new Rock()));
+        Intent intent = new Intent(this, GameView_Activity.class);
         startActivity(intent);
     }
 

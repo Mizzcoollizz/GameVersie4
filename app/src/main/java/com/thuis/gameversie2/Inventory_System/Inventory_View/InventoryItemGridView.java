@@ -1,36 +1,16 @@
 package com.thuis.gameversie2.Inventory_System.Inventory_View;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.content.ClipData;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.os.Build;
-import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
-import android.util.AttributeSet;
+import android.graphics.Rect;
 import android.util.Log;
-import android.view.DragEvent;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.thuis.gameversie2.GamePanel;
-import com.thuis.gameversie2.Inventory_System.Inventory;
 import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
-import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.ItemSelectListener;
-import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnInventoryItemDragListener;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnItemTouchListener;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.R;
@@ -89,6 +69,7 @@ public class InventoryItemGridView extends RelativeLayout implements InventoryDr
 
         }catch(NullPointerException ex){
             return this;
+
         }
 
     }
@@ -100,7 +81,6 @@ public class InventoryItemGridView extends RelativeLayout implements InventoryDr
         try {
             Item item1 = GamePanel.getInventory().getAllSlots().get(viewDragging.getPosition()).getItem();
             Item item2 = GamePanel.getInventory().getAllSlots().get(view.getPosition()).getItem();
-
             if(item1.isEqualItem(item2)){
                 //Todo add multiple items
             }
@@ -111,66 +91,40 @@ public class InventoryItemGridView extends RelativeLayout implements InventoryDr
         return false;
     }
 
-    @Override
-    public void onItemSelect() {
-
-            View activity = parent.getRootView();
-            int position = this.getPosition();
-            TextView nameTextView = (TextView) activity.findViewById(R.id.nameTextView_Inventory_input);
-            TextView typeTextView = (TextView) activity.findViewById(R.id.typeTextView_Inventory_input);
-            TextView gradeTextView = (TextView) activity.findViewById(R.id.gradeTextView_Inventory_input);
-            ImageView imageView = (ImageView) activity.findViewById(R.id.ImageView_Selected_Item);
-            try {
-                //When the user clicks on an item, the item background will be green.
-                //The other elements have a transparent background.
-                for(int i = 0; i < parent.getChildCount(); i++){
-                    parent.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-                }
-                this.setBackgroundColor(Color.RED);
-
-                Item item = GamePanel.getInventory().getAllSlots().get(position).getItem();
-
-                if (item != null && !item.equals(null) && this != null) {
-                    nameTextView.setText(item.getName());
-                    typeTextView.setText(item.getClass().getSimpleName());
-                    gradeTextView.setText(Integer.toString(item.getGrade()));
-
-                    Bitmap imageBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.inventory_item_border);
-                    imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
-
-                    imageBitmap = imageBitmap.copy(Bitmap.Config.ARGB_4444, true);
-                    Canvas canvas = new Canvas(imageBitmap);
-                    Bitmap itemImage = Bitmap.createScaledBitmap(item.getImage(), 92, 92, false);
-                    canvas.drawBitmap(itemImage, 0, 0, null);
-                    imageView.setImageBitmap(imageBitmap);
-                }else{
-                    throw new NullPointerException();
-                }
-
-            }catch (NullPointerException ex){
-                ex.printStackTrace();
-                nameTextView.setText(null);
-                typeTextView.setText(null);
-                gradeTextView.setText(null);
-                Bitmap imageBitmap = BitmapFactory.decodeResource(this.getResources(), R.drawable.inventory_item_border);
-                imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
-                imageView.setImageBitmap(imageBitmap);
-            }
-
-
-    }
 
     @Override
     public boolean checkHasItem() {
         try {
-            if (GamePanel.getInventory().getAllSlots().get(this.getPosition()).getAmount() > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return !getItemSlot().isEmpty();
 
         } catch (NullPointerException ex) {
             return false;
         }
+    }
+
+    @Override
+    public Inventory_Slot getItemSlot(){
+        return GamePanel.getInventory().getAllSlots().get(this.getPosition());
+    }
+
+    @Override
+    public boolean dropItem(Item item, InventoryDropView viewDragging) {
+        if(viewDragging instanceof InventoryItemGridView){
+            swapItems(this, (InventoryItemGridView) viewDragging);
+            return true;
+        }else if(viewDragging instanceof InventoryAlternativeDropView){
+            InventoryAlternativeDropView inventoryAlternativeDropView = (InventoryAlternativeDropView ) viewDragging;
+            Inventory_Slot tempSlot = this.getItemSlot();
+            GamePanel.getInventory().putItem(inventoryAlternativeDropView.getItemSlot(), this.getPosition());
+            inventoryAlternativeDropView.setItemSlot(tempSlot);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Rect getItemImageViewBounds(){
+        ImageView itemImageView = (ImageView) findViewById(R.id.inventoryItemImageView);
+        return new Rect(0, 0, itemImageView.getWidth(), itemImageView.getHeight());
     }
 }

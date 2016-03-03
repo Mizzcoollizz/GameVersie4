@@ -5,19 +5,18 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
+import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.thuis.gameversie2.GamePanel;
+import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.OnItemTouchListener;
+import com.thuis.gameversie2.Inventory_System.ToolInventorySlot;
 import com.thuis.gameversie2.Items.Item;
+import com.thuis.gameversie2.Items.Tools.Tool;
 import com.thuis.gameversie2.R;
 
 /**
@@ -60,14 +59,16 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
         setOnTouchListener(new OnItemTouchListener(context, parent));
         setEmptyInventoryImage();
         setCurrentImage();
-
     }
 
     private void setCurrentImage(){
-        Item item = getItem();
-        if(item != null) {
-            Log.i("Image: ", item.getInventoryImage().toString());
-            this.setImageBitmap(item.getInventoryImage());
+        if(getItemSlot() != null){
+            Item item = getItemSlot().getItem();
+            if(item != null) {
+                this.setImageBitmap(item.getInventoryImage());
+            }else{
+                this.setImageBitmap(emptyInventoryImage);
+            }
         }else{
             this.setImageBitmap(emptyInventoryImage);
         }
@@ -76,76 +77,114 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
     @Override
     public boolean dropItem(InventoryDropView viewDragging, InventoryDropView hoveringView) {
         //TODO drop item here
+
         return false;
     }
 
 
     @Override
-    public void onItemSelect() {
-        View view = (View) this;
-
-        View activity = getRootView();
-        TextView nameTextView = (TextView) activity.findViewById(R.id.nameTextView_Inventory_input);
-        TextView typeTextView = (TextView) activity.findViewById(R.id.typeTextView_Inventory_input);
-        TextView gradeTextView = (TextView) activity.findViewById(R.id.gradeTextView_Inventory_input);
-        ImageView imageView = (ImageView) activity.findViewById(R.id.ImageView_Selected_Item);
-        try {
-
-            ViewGroup gridView = (ViewGroup) activity.findViewById(R.id.inventoryGridView);
-            //When the user clicks on an item, the item background will be green.
-            //The other elements have a transparent background.
-            for(int i = 0; i < gridView.getChildCount(); i++){
-                gridView.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-            }
-
-            view.setBackgroundColor(Color.RED);
-
-            Item item = getItem();
-
-            if (item != null && !item.equals(null) && view != null) {
-                nameTextView.setText(item.getName());
-                typeTextView.setText(item.getClass().getSimpleName());
-                gradeTextView.setText(Integer.toString(item.getGrade()));
-
-                Bitmap imageBitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.inventory_item_border);
-                imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
-
-                imageBitmap = imageBitmap.copy(Bitmap.Config.ARGB_4444, true);
-                Canvas canvas = new Canvas(imageBitmap);
-                Bitmap itemImage = Bitmap.createScaledBitmap(item.getImage(), 92, 92, false);
-                canvas.drawBitmap(itemImage, 0, 0, null);
-                imageView.setImageBitmap(imageBitmap);
-            }else{
-                throw new NullPointerException();
-            }
-
-        }catch (NullPointerException ex){
-            ex.printStackTrace();
-            nameTextView.setText(null);
-            typeTextView.setText(null);
-            gradeTextView.setText(null);
-            Bitmap imageBitmap = BitmapFactory.decodeResource(view.getResources(), R.drawable.inventory_item_border);
-            imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
-            imageView.setImageBitmap(imageBitmap);
-        }
-
-
+    public boolean checkHasItem() {
+        return getItemSlot() != null && !getItemSlot().isEmpty();
     }
 
     @Override
-    public boolean checkHasItem() {
-        return getItem() != null;
-    }
-
-    private Item getItem(){
+    public Inventory_Slot getItemSlot(){
+        Inventory_Slot returnSlot = new Inventory_Slot();
         switch(getId()){
             case R.id.imageView_player_item_holding:
-                return GamePanel.getPlayer().getItemHolding();
+                returnSlot =  GamePanel.getPlayer().getItemHolding();
+                break;
             case R.id.imageViewPlayerToolHolding:
-                return GamePanel.getPlayer().getToolHolding();
+                returnSlot = new ToolInventorySlot(GamePanel.getPlayer().getToolHolding());
+                break;
             default:
-                return null;
+                break;
+        }
+        return returnSlot;
+    }
+
+    @Override
+    public boolean dropItem(Item item, InventoryDropView draggingView) {
+        //TODO still not working
+        if(draggingView instanceof InventoryItemGridView){
+            return dropInventoryItem(item, (InventoryItemGridView) draggingView);
+        }else if(draggingView instanceof InventoryAlternativeDropView){
+            return dropAlternativeViewItem(item, (InventoryAlternativeDropView) draggingView);
+        }
+        return false;
+    }
+
+    @Override
+    public Rect getItemImageViewBounds() {
+        return new Rect(0, 0, this.getWidth(), this.getHeight());
+    }
+
+    private boolean dropAlternativeViewItem(Item item, InventoryAlternativeDropView inventoryAlternativeDropView){
+        Inventory_Slot tempInventorySlot = this.getItemSlot();
+        switch(getId()){
+            case R.id.imageView_player_item_holding:
+                GamePanel.getPlayer().setItemHolding(inventoryAlternativeDropView.getItemSlot());
+                inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
+                return true;
+            case R.id.imageViewPlayerToolHolding:
+                if(item instanceof Tool) {
+                    if (item instanceof Tool) {
+                        GamePanel.getPlayer().setToolHolding((Tool) item);
+                        inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            default:
+                return false;
+        }
+    }
+
+    public void setItemSlot(Inventory_Slot itemSlot) {
+        switch(getId()){
+            case R.id.imageView_player_item_holding:
+              GamePanel.getPlayer().setItemHolding(itemSlot);
+                break;
+            case R.id.imageViewPlayerToolHolding:
+                GamePanel.getPlayer().setToolHolding((Tool) itemSlot.getItem());
+            break;
+
+        }
+        setCurrentImage();
+
+    }
+
+    public boolean dropInventoryItem(Item item, InventoryItemGridView inventoryItemGridView){
+
+        Inventory_Slot inventory_slot = inventoryItemGridView.getItemSlot();
+
+        switch(getId()){
+            case R.id.imageView_player_item_holding:
+
+                GamePanel.getInventory().putItem(this.getItemSlot(), inventoryItemGridView.getPosition());
+                GamePanel.getPlayer().setItemHolding(inventory_slot);
+                setCurrentImage();
+                return true;
+            case R.id.imageViewPlayerToolHolding:
+                if(item instanceof Tool){
+                    if(this.checkHasItem()) {
+                        GamePanel.getInventory().putItem(this.getItemSlot(), inventoryItemGridView.getPosition());
+                    }
+                    GamePanel.getPlayer().setToolHolding((Tool) item);
+                    setCurrentImage();
+                    return true;
+                }else{
+                    return false;
+                }
+            default:
+                return false;
         }
 
     }
+
+
+
 }

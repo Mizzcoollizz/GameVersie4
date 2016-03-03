@@ -1,6 +1,7 @@
 package com.thuis.gameversie2.Inventory_System;
 
 import com.thuis.gameversie2.Items.Item;
+import com.thuis.gameversie2.Items.Tools.Tool;
 
 import java.util.ArrayList;
 
@@ -20,7 +21,11 @@ public class Inventory_Slot_Collection {
     public boolean addSlot(Item item){
         for(int i = 0; i < slots.length; i++){
             if(slots[i].getAmount() == 0){
-                slots[i] = new Inventory_Slot(item);
+                if(item instanceof Tool){
+                    slots[i] = new ToolInventorySlot(item);
+                }else {
+                    slots[i] = new Inventory_Slot(item);
+                }
                 return true;
             }
         }

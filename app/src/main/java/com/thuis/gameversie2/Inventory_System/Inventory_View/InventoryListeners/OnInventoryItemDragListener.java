@@ -1,199 +1,128 @@
 package com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners;
 
+import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.util.Log;
 import android.view.DragEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.GridView;
 
-import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryAlternativeDropView;
+import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryDropView;
-import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryItemGridView;
-import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_List_Adapter;
+import com.thuis.gameversie2.Items.Item;
+import com.thuis.gameversie2.R;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
- * Created by Elize on 2-9-2015.
+ * Created by Elize on 2-1-2016.
  */
-public class OnInventoryItemDragListener implements View.OnDragListener{
+public class OnInventoryItemDragListener implements View.OnDragListener {
 
-    private ViewGroup parent = null;
-    private static boolean dragging = false;
-    private static InventoryDropView viewDragging = null;
-    private GridView parentGridView = null;
-    private Rect parentRect = null;
+    ViewGroup parent = null;
+    GridView gridView = null;
 
-    public OnInventoryItemDragListener(ViewGroup gridview, ViewGroup parent) {
+    public OnInventoryItemDragListener(ViewGroup parent, Activity activity){
         this.parent = parent;
-        this.parentGridView = (GridView) gridview;
-    }
-
-    public static boolean isDragging() {
-        return dragging;
+        gridView = (GridView) activity.findViewById(R.id.inventoryGridView);
     }
 
     @Override
     public boolean onDrag(View v, DragEvent event) {
         switch (event.getAction()){
             case DragEvent.ACTION_DRAG_STARTED:
-                dragging = true;
+                gridView.invalidateViews();
+                ((View) event.getLocalState()).setBackgroundColor(Color.RED);
                 return true;
             case DragEvent.ACTION_DRAG_LOCATION:
-                colorItems((int) event.getX(), (int) event.getY());
+                colorItems((int)event.getX(), (int)event.getY());
                 return true;
             case DragEvent.ACTION_DRAG_ENDED:
-                dragging = false;
-                removeAllColoredItems();
                 return true;
             case DragEvent.ACTION_DROP:
-                dragging = false;
-                dropItem((int)event.getX(), (int)event.getY());
-                Inventory_List_Adapter adapter = (Inventory_List_Adapter) parentGridView.getAdapter();
-                adapter.notifyDataSetChanged();
-                removeAllColoredItems();
+                dropItem((int) event.getX(), (int) event.getY(), (InventoryDropView) event.getLocalState());
+                BaseAdapter baseAdapter = (BaseAdapter) gridView.getAdapter();
+                baseAdapter.notifyDataSetChanged();
+                gridView.invalidateViews();
+
                 return true;
             case DragEvent.ACTION_DRAG_EXITED:
-                View.DragShadowBuilder shadow = new View.DragShadowBuilder(v);
-                parent.getRootView().startDrag(event.getClipData(), shadow, null, 0);
-                removeAllColoredItems();
-                System.out.println("EXITED");
                 return true;
             default:
                 return false;
         }
     }
 
-    private void dropItem(int x, int y) {
-        InventoryItemGridView view = (InventoryItemGridView) checkHoverItems(x,y, parent);
-        if( view != null){
-            if(view.dropItem(viewDragging, view)){
-            }
-
-
-        }else{
-
-
-                //TODO Drop in alternative thingy
-           // getAlternativeDropView(x, y);
-        }
-    }
-
-    private View getAlternativeDropView(int x, int y){
-        //TODO check if dropped in alternative view
-        //InventoryAlternativeDropView
-        return null;
-    }
-
-    private void removeAllColoredItems(){
-        for (int i = 0; i < parent.getChildCount(); i++) {
-            View view = parent.getChildAt(i);
-            if(view instanceof GridView){
-                GridView gridView = (GridView) view;
-                for(int j = 0; j < gridView.getChildCount(); j++){
-                    gridView.getChildAt(j).setBackgroundColor(Color.TRANSPARENT);
-                }
-            }
-            view.setBackgroundColor(Color.TRANSPARENT);
-        }
-    }
-
-
-    private void colorItems(int x, int y){
-        removeAllColoredItems();
-
-
-        if (dragging){
-            View view = checkHoverItems(x,y, parent);
-            if(view != null){
-                view.setBackgroundColor(Color.YELLOW);
-            }
-        }
-
-    }
-
-    private View getHoveringInventoryDropView(View view, int x, int y){
-
-        if(view instanceof InventoryDropView) {
-
-            //Rect rect = new Rect((int)view.getX(), (int) view.getY(), (int) view.getX() + view.getWidth(), (int) view.getY() + view.getHeight());
-            Rect rect = new Rect(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
-            if (rect.contains(x, y)) {
-                if (view instanceof InventoryAlternativeDropView) {
-                    System.out.println("ALTERNATIVE VIEW!!!!!!!!!!!!!!!!!!!!!!!!!");
-                }
-                System.out.println("FoundView");
+    private View getHoveringView(int x, int y){
+        for(View view: getAllViews(parent, null)) {
+            int[] location = new int[2];
+            view.getLocationOnScreen(location);
+            Rect rect = new Rect(location[0], location[1], location[0] + view.getWidth(), location[1] + view.getHeight());
+            if(rect.contains(x, y)){
                 return view;
             }
         }
         return null;
     }
 
-    private View checkHoverItems(int x, int y, ViewGroup parent) {
+    private void colorItems(int x, int y){
+        removeAllColoredItems();
+        View view = getHoveringView(x, y);
+        if(view != null){
+            view.setBackgroundColor(Color.GREEN);
+        }
 
-//        //TODO Make object drop in alternative view
-            for (int i = 0; i < parent.getChildCount(); i++) {
-                View view = parent.getChildAt(i);
+    }
 
-//                if(view instanceof ViewGroup){
-//                    ViewGroup gridView = (ViewGroup) view;
-//                    if(gridView.getChildCount() > 0 && !(view instanceof InventoryDropView)){
-//                        checkHoverItems(x, y, gridView);
-//                    }else{
-//                        View returnview = getHoveringInventoryDropView(gridView, x, y);
-//                        if(returnview != null){
-//                            return returnview;
-//                        }
-//                    }
-//                }else{
-//                    View returnview = getHoveringInventoryDropView(view, x, y);
-//                    if(returnview != null){
-//                        return returnview;
-//
-//                    }
-//                }
+    private ArrayList<View> getAllViews(View view, ArrayList<View> viewArrayList){
+        if(viewArrayList == null) {
+            viewArrayList = new ArrayList<>();
+        }
 
-                if(view instanceof GridView){
-                    GridView gridView = (GridView) view;
-                    for(int j = 0; j < gridView.getChildCount(); j++){
-                        View returnView = getHoveringInventoryDropView(gridView.getChildAt(j), x, y);
-                        if(returnView != null){
-                            return returnView;
-                        }
-                    }
-                }else{
-                    View returnView = getHoveringInventoryDropView(view, x, y);
-                    if(returnView != null){
-                        return returnView;
+        if(view instanceof InventoryDropView) {
+            viewArrayList.add(view);
+        }else if(view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup) view;
+            if (viewGroup.getChildCount() > 0) {
+                for (int i = 0; i < viewGroup.getChildCount(); i++) {
+                    getAllViews(viewGroup.getChildAt(i), viewArrayList);
+                }
+            }
+        }
+        return viewArrayList;
+    }
+
+    private void removeAllColoredItems(){
+            for(View view: getAllViews(parent, null)) {
+                view.setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+
+
+    private void dropItem(int x, int y, InventoryDropView viewDragging){
+        InventoryDropView hoveringView = (InventoryDropView) getHoveringView(x, y);
+        if(hoveringView != null){
+            Item draggingItem = viewDragging.getItemSlot().getItem();
+
+            if(hoveringView.getItemSlot() != null){
+                Item itemInDropSlot = hoveringView.getItemSlot().getItem();
+                if(draggingItem.isEqualItem(itemInDropSlot)){
+                    GamePanel.getInventory().mergeInventorySlots(viewDragging, hoveringView);
+                }else {
+                    if(hoveringView.dropItem(draggingItem, viewDragging)){
+
                     }
                 }
-
-//                int[] location = new int[2];
-//                view.getLocationOnScreen(location);
-//                int xs = location[0];
-//                int ys = location[1];
-//               // Rect rect = new Rect(xs, ys, xs + view.getWidth(), ys + view.getHeight());
-//                Rect rect = new Rect((int)view.getX(), (int) view.getY(), (int) view.getX() + view.getWidth(), (int) view.getY() + view.getHeight());
-
-//
-//                if (rect.contains(x, y)) {
-//                    if (view instanceof InventoryAlternativeDropView) {
-//                        System.out.println("ALTERNATIVE VIEW!!!!!!!!!!!!!!!!!!!!!!!!!");
-//                    }
-//
-//                    System.out.println("FoundView");
-//                    return view;
-//                }
-//
-//
             }
 
-            return null;
+        }
+        }
+
     }
 
 
-    public static void setViewDragging(View _viewDragging) {
-       viewDragging = (InventoryDropView) _viewDragging;
-    }
-}
+

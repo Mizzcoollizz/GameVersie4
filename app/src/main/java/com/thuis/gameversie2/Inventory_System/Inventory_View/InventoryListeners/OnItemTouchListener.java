@@ -7,12 +7,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Rect;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,6 +18,7 @@ import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryAlternativeDropView;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryDropView;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryItemGridView;
+import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.R;
 
@@ -32,6 +30,7 @@ public class OnItemTouchListener implements View.OnTouchListener {
     private boolean selected = false;
     ViewGroup parent = null;
     ViewGroup baseView = null;
+
 
     public OnItemTouchListener(Context context, ViewGroup parent){
         this.parent = parent;
@@ -50,9 +49,9 @@ public class OnItemTouchListener implements View.OnTouchListener {
                     View viewToDrag = v;
                     ClipData data = ClipData.newPlainText((String) viewToDrag.getTag(),
                             String.valueOf(0));
-                    View.DragShadowBuilder shadow = new View.DragShadowBuilder(viewToDrag);
+                    InventoryCustomDragShadow shadow = new InventoryCustomDragShadow(viewToDrag);
+                    //View.DragShadowBuilder shadow = new View.DragShadowBuilder(viewToDrag);
                     viewToDrag.startDrag(data, shadow, viewToDrag, 0);
-                    OnInventoryItemDragListener.setViewDragging(viewToDrag);
                 }else{
                     if(v instanceof InventoryItemGridView) {
                         GridView gridView = (GridView) parent;
@@ -81,28 +80,25 @@ public class OnItemTouchListener implements View.OnTouchListener {
         }
     }
 
-    private void onItemSelect(InventoryDropView view){
-            view.onItemSelect();
-    }
+    private void onItemSelect(InventoryDropView inventoryDropView){
 
-    private void onGridViewItemSelect(InventoryItemGridView view){
-
-        View activity = parent.getRootView();
-        int position = view.getPosition();
+        View view = (View) inventoryDropView;
+        View activity = view.getRootView();
         TextView nameTextView = (TextView) activity.findViewById(R.id.nameTextView_Inventory_input);
         TextView typeTextView = (TextView) activity.findViewById(R.id.typeTextView_Inventory_input);
         TextView gradeTextView = (TextView) activity.findViewById(R.id.gradeTextView_Inventory_input);
         ImageView imageView = (ImageView) activity.findViewById(R.id.ImageView_Selected_Item);
         try {
-            //When the user clicks on an item, the item background will be green.
-            //The other elements have a transparent background.
-            for(int i = 0; i < parent.getChildCount(); i++){
-                parent.getChildAt(i).setBackgroundColor(Color.TRANSPARENT);
-            }
+            ViewGroup gridView = (ViewGroup) activity.findViewById(R.id.inventoryGridView);
+            Inventory_Activity.setAllBackgroundsTransparent(gridView);
             view.setBackgroundColor(Color.RED);
-
-            Item item = GamePanel.getInventory().getAllSlots().get(position).getItem();
-
+            Item item = null;
+            if(inventoryDropView instanceof InventoryAlternativeDropView) {
+                item = ((InventoryAlternativeDropView)inventoryDropView).getItemSlot().getItem();
+            }else if(inventoryDropView instanceof InventoryItemGridView){
+                InventoryItemGridView inventoryItemGridView = (InventoryItemGridView) inventoryDropView;
+                item = GamePanel.getInventory().getAllSlots().get(inventoryItemGridView.getPosition()).getItem();
+            }
             if (item != null && !item.equals(null) && view != null) {
                 nameTextView.setText(item.getName());
                 typeTextView.setText(item.getClass().getSimpleName());
@@ -119,9 +115,7 @@ public class OnItemTouchListener implements View.OnTouchListener {
             }else{
                 throw new NullPointerException();
             }
-
         }catch (NullPointerException ex){
-            ex.printStackTrace();
             nameTextView.setText(null);
             typeTextView.setText(null);
             gradeTextView.setText(null);
@@ -129,13 +123,5 @@ public class OnItemTouchListener implements View.OnTouchListener {
             imageBitmap = Bitmap.createScaledBitmap(imageBitmap, 92, 92, false);
             imageView.setImageBitmap(imageBitmap);
         }
-
     }
-
-
-
-
-
-
-
 }
