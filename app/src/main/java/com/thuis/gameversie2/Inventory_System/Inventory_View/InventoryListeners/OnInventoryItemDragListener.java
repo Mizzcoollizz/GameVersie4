@@ -103,6 +103,12 @@ public class OnInventoryItemDragListener implements View.OnDragListener {
         }
 
 
+    /**
+     * If the item in the slot is equal to the one hovering, the itemslots should be merged.
+     * @param x
+     * @param y
+     * @param viewDragging
+     */
     private void dropItem(int x, int y, InventoryDropView viewDragging){
         InventoryDropView hoveringView = (InventoryDropView) getHoveringView(x, y);
         if(hoveringView != null){
@@ -111,7 +117,7 @@ public class OnInventoryItemDragListener implements View.OnDragListener {
             if(hoveringView.getItemSlot() != null){
                 Item itemInDropSlot = hoveringView.getItemSlot().getItem();
                 if(draggingItem.isEqualItem(itemInDropSlot)){
-                    GamePanel.getInventory().mergeInventorySlots(viewDragging, hoveringView);
+                    GamePanel.getInventory().mergeInventorySlots(viewDragging.getItemSlot(), hoveringView.getItemSlot());
                 }else {
                     if(hoveringView.dropItem(draggingItem, viewDragging)){
 

@@ -85,15 +85,11 @@ public abstract class Item {
 
 	public Bitmap getImageFromResource(int id){
 		return BitmapFactory.decodeResource(Main_Menu_Activity.getContext().getResources(), id);
-	};
+	}
 
 	public boolean isEqualItem(Item item){
 		if(item != null) {
-			if (this.grade == item.grade && this.getClass().equals(item.getClass())) {
-				return true;
-			} else {
-				return false;
-			}
+			return this.grade == item.grade && this.getClass().equals(item.getClass());
 		}else{
 			return false;
 		}
@@ -116,9 +112,8 @@ public abstract class Item {
 			is = Main_Menu_Activity.getContext().getAssets().open(path);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-			return BitmapFactory.decodeStream(is);
 		}
+		return BitmapFactory.decodeStream(is);
 	}
 
 
@@ -149,9 +144,9 @@ public abstract class Item {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
-		}finally{
-			return json;
 		}
+			return json;
+
 
 	}
 
@@ -188,6 +183,11 @@ public abstract class Item {
 
 	public abstract boolean isJsonGathered();
 
+	/**
+	 * Method for creating a new clone of the given object.
+	 * @param item: the item to be cloned
+	 * @return the new instance
+	 */
 	public static Item getNewInstance(Item item){
 		Item newItem = null;
 		try {
@@ -199,9 +199,9 @@ public abstract class Item {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
-		}finally {
-			return newItem;
 		}
+			return newItem;
+
 	}
 
 

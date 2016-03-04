@@ -23,11 +23,7 @@ public class Inventory_Slot {
     public boolean isEqualItem(Item _item) {
         if(items.size() > 0) {
             Item item = items.get(0);
-            if (item.isEqualItem(_item)) {
-                return true;
-            }else{
-                return false;
-            }
+            return item.isEqualItem(_item);
         }else {
             return false;
         }
@@ -38,7 +34,9 @@ public class Inventory_Slot {
     }
 
     public void add(Item item) {
-        items.add(item);
+        if(hasRoom()) {
+            items.add(item);
+        }
     }
 
     public Item getItem() {

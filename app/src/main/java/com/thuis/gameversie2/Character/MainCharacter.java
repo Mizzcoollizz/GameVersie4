@@ -92,9 +92,8 @@ public class MainCharacter {
 	}
 
 	public  void setDirection(String direction) {
-		this.direction = direction;
+		MainCharacter.direction = direction;
 		animation.setCurrentDirection(direction);
-
 	}
 
 	public static int getMapTileY() {
@@ -113,11 +112,12 @@ public class MainCharacter {
 	}
 
 	private static boolean checkCollision() {
-		if(checkBorderCollision() || MapHandler.getCurrentMap().checkObjectCollision()){
-			return false;
-		}else{
-			return true;
-		}
+//		if(checkBorderCollision() || MapHandler.getCurrentMap().checkObjectCollision()){
+//			return false;
+//		}else{
+//			return true;
+//		}
+		return !checkBorderCollision() && !MapHandler.getCurrentMap().checkObjectCollision();
 	}
 
 	public int getWidth() {
@@ -193,12 +193,13 @@ public class MainCharacter {
 
 	private Bitmap getHairImages() {
 		try {
-			if (getHairColor().equals("Blond")) {
-				return BitmapFactory.decodeResource(context.getResources(), R.drawable.blond_haar1);
-			} else if (getHairColor().equals("Dark Blonde")) {
-				return BitmapFactory.decodeResource(context.getResources(), R.drawable.donker_blond_haar1);
-			} else {
-				throw new FileNotFoundException();
+			switch (getHairColor()) {
+				case "Blond":
+					return BitmapFactory.decodeResource(context.getResources(), R.drawable.blond_haar1);
+				case "Dark Blonde":
+					return BitmapFactory.decodeResource(context.getResources(), R.drawable.donker_blond_haar1);
+				default:
+					throw new FileNotFoundException();
 			}
 		}catch (FileNotFoundException ex){
 			//File not found!
@@ -280,22 +281,22 @@ public class MainCharacter {
 		int X = (int) mapX - (int) MapSurfaceView.getScreenX() - (this.width /2);
 		int Y = (int) mapY - (int) MapSurfaceView.getScreenY() - (this.height / 2);
 
-		if(new Rect(X,Y, X + getWidth(), Y + getHeight()).contains((int)event.getX(),(int) event.getY())){
-			return true;
-		}else{
-			return false;
-		}
+		return new Rect(X, Y, X + getWidth(), Y + getHeight()).contains((int) event.getX(), (int) event.getY());
 
 
 	}
 
+	/**
+	 * If the player is not holding anything, go to inventory
+	 * Otherwise, store item
+	 */
 	public void manageOnTouch() {
-		if(itemHolding == null || itemHolding.equals(null)){
+		if(itemHolding == null || itemHolding.isEmpty()){
 			Intent intent = new Intent(GameView_Activity.getContext(), Inventory_Activity.class);
 			GameView_Activity.getContext().startActivity(intent);
-		}else if(!itemHolding.equals(null)){
-			if(GamePanel.getInventory().add(getItemHolding().getItem())){
-				this.itemHolding = null;
+		}else if(itemHolding != null && !itemHolding.isEmpty()){
+			if(GamePanel.getInventory().addItemSlot(getItemHolding())){
+				this.itemHolding = new Inventory_Slot();
 			}else{
 				//TODO error message!
 			}
@@ -328,7 +329,7 @@ public class MainCharacter {
 	}
 
 	public Bitmap getItemHoldingInventoryImage() {
-		if(itemHolding != null){
+		if(itemHolding != null && itemHolding.getItem() != null){
 			return itemHolding.getItem().getInventoryImage();
 		}else{
 			return Item.borderImageBitmap;

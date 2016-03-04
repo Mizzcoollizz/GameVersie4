@@ -1,13 +1,10 @@
 package com.thuis.gameversie2.Inventory_System.Inventory_View;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.GridView;
-
-import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryListeners.ItemSelectListener;
 
 /**
  * Created by Elize on 1-9-2015.
@@ -45,7 +42,6 @@ public class InventoryGridView extends GridView{
 
     private void init(Context context){
         setAdapter(new Inventory_List_Adapter(context));
-        setOnItemClickListener(new ItemSelectListener((Activity) this.getContext()));
     }
 
 }

@@ -36,13 +36,4 @@ public class Inventory_Slot_Collection {
         return slots;
     }
 
-    public boolean checkContainsSlotAndAdd(Item item) {
-        for(int i = 0; i < slots.length; i++) {
-            if (slots[i] != null && slots[i].isEqualItem(item) && slots[i].hasRoom()) {
-                slots[i].add(item);
-                return true;
-            }
-        }
-        return false;
-    }
 }

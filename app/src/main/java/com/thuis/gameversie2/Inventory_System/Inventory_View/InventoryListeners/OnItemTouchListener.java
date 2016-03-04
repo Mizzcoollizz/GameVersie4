@@ -50,7 +50,6 @@ public class OnItemTouchListener implements View.OnTouchListener {
                     ClipData data = ClipData.newPlainText((String) viewToDrag.getTag(),
                             String.valueOf(0));
                     InventoryCustomDragShadow shadow = new InventoryCustomDragShadow(viewToDrag);
-                    //View.DragShadowBuilder shadow = new View.DragShadowBuilder(viewToDrag);
                     viewToDrag.startDrag(data, shadow, viewToDrag, 0);
                 }else{
                     if(v instanceof InventoryItemGridView) {
@@ -94,12 +93,12 @@ public class OnItemTouchListener implements View.OnTouchListener {
             view.setBackgroundColor(Color.RED);
             Item item = null;
             if(inventoryDropView instanceof InventoryAlternativeDropView) {
-                item = ((InventoryAlternativeDropView)inventoryDropView).getItemSlot().getItem();
+                item = inventoryDropView.getItemSlot().getItem();
             }else if(inventoryDropView instanceof InventoryItemGridView){
                 InventoryItemGridView inventoryItemGridView = (InventoryItemGridView) inventoryDropView;
                 item = GamePanel.getInventory().getAllSlots().get(inventoryItemGridView.getPosition()).getItem();
             }
-            if (item != null && !item.equals(null) && view != null) {
+            if (item != null && view != null) {
                 nameTextView.setText(item.getName());
                 typeTextView.setText(item.getClass().getSimpleName());
                 gradeTextView.setText(Integer.toString(item.getGrade()));

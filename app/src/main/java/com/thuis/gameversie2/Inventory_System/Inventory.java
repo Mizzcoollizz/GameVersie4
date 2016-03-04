@@ -2,10 +2,12 @@ package com.thuis.gameversie2.Inventory_System;
 
 import android.util.Log;
 
+import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryDropView;
 import com.thuis.gameversie2.Items.Item;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by Elize on 20-8-2015.
@@ -13,7 +15,6 @@ import java.util.ArrayList;
 public class Inventory {
     private ArrayList<Inventory_Slot_Collection> currentInventory = new ArrayList<>(20);
     private int level = 1;
-
 
     public Inventory(){
         expand();
@@ -23,9 +24,7 @@ public class Inventory {
         ArrayList<Inventory_Slot> slots = new ArrayList<>();
         for(Inventory_Slot_Collection inventorySlotsCollection: getCurrentInventory()){
             Inventory_Slot[] inventorySlots = inventorySlotsCollection.getSlots();
-            for(int i = 0; i < inventorySlots.length; i++){
-                slots.add(inventorySlots[i]);
-            }
+            Collections.addAll(slots, inventorySlots);
         }
         return slots;
     }
@@ -41,14 +40,31 @@ public class Inventory {
     public boolean add(Item item){
         if(checkAndAddIfItemIsInInventory_Slot(item)){
             return true;
-        }else if(createNewItemSlot(item)){
-            return true;
-        }else{
-            return false;
-        }
+        }else return createNewItemSlot(item);
     }
 
-    public boolean remove(Item item){
+    public boolean addItemSlot(Inventory_Slot slotToAdd) {
+
+        for (Inventory_Slot slot : getAllSlots()) {
+            if (slot.isEqualItem(slotToAdd.getItem()) && slot.hasRoom()) {
+                mergeInventorySlots(slotToAdd, slot);
+                break;
+            }
+        }
+
+        return slotToAdd.isEmpty() || addNewInventorySlot(slotToAdd);
+
+    }
+
+    private boolean addNewInventorySlot(Inventory_Slot slotToAdd){
+        ArrayList<Inventory_Slot> allSlots = getAllSlots();
+        for(int i = 0; i < allSlots.size(); i++){
+            Inventory_Slot slot = allSlots.get(i);
+            if(slot.isEmpty()){
+                GamePanel.getInventory().putItem(slotToAdd, i);
+                return true;
+            }
+        }
         return false;
     }
 
@@ -70,9 +86,11 @@ public class Inventory {
     }
 
     private boolean checkAndAddIfItemIsInInventory_Slot(Item item){
-        for(Inventory_Slot_Collection inventory_slot: getCurrentInventory()){
-            boolean added = inventory_slot.checkContainsSlotAndAdd(item);
-            if(added){
+        ArrayList<Inventory_Slot> allSlots = getAllSlots();
+        for(int i = 0; i < allSlots.size(); i++){
+            Inventory_Slot slot = allSlots.get(i);
+            if(slot.isEqualItem(item) && slot.hasRoom()){
+                slot.add(item);
                 return true;
             }
         }
@@ -85,10 +103,12 @@ public class Inventory {
         for(Inventory_Slot_Collection inventory_slot_collection: currentInventory){
             for(int i = 0; i < inventory_slot_collection.getSlots().length; i++){
                 Inventory_Slot inventory_slot =  inventory_slot_collection.getSlots()[i];
-                    if(inventory_slot.equals(itemInView1) && item1Found == false){
+                    if(inventory_slot.equals(itemInView1) && !item1Found){
                         inventory_slot_collection.getSlots()[i] = itemInView2;
-                    }else if(inventory_slot.equals(itemInView2) && item2Found == false){
+                        item1Found = true;
+                    }else if(inventory_slot.equals(itemInView2) && !item2Found){
                         inventory_slot_collection.getSlots()[i] = itemInView1;
+                        item2Found = true;
                     }
             }
         }
@@ -100,13 +120,14 @@ public class Inventory {
        currentInventory.get(inventory_slot_collection).getSlots()[locationInSlotCollection] = itemSlot;
     }
 
-    public boolean mergeInventorySlots(InventoryDropView viewDragging, InventoryDropView dropView){
-        Inventory_Slot draggingInventorySlot = viewDragging.getItemSlot();
-        Inventory_Slot dropViewInventorySlot = dropView.getItemSlot();
-        while(dropViewInventorySlot.hasRoom()){
-            dropViewInventorySlot.add(draggingInventorySlot.getAndRemoveFirst());
+    public boolean mergeInventorySlots(Inventory_Slot draggingInventorySlot, Inventory_Slot dropInventorySlot){
+
+        while(dropInventorySlot.hasRoom()){
+            dropInventorySlot.add(draggingInventorySlot.getAndRemoveFirst());
         }
         return true;
     }
+
+
 
 }

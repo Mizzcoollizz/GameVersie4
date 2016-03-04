@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -127,7 +128,7 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
                 inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
                 return true;
             case R.id.imageViewPlayerToolHolding:
-                if(item instanceof Tool) {
+
                     if (item instanceof Tool) {
                         GamePanel.getPlayer().setToolHolding((Tool) item);
                         inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
@@ -135,9 +136,7 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
                     } else {
                         return false;
                     }
-                }else{
-                    return false;
-                }
+
             default:
                 return false;
         }
@@ -160,6 +159,7 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
     public boolean dropInventoryItem(Item item, InventoryItemGridView inventoryItemGridView){
 
         Inventory_Slot inventory_slot = inventoryItemGridView.getItemSlot();
+        Log.i("tag","dropping into alternative view");
 
         switch(getId()){
             case R.id.imageView_player_item_holding:
