@@ -121,7 +121,9 @@
         android:layout_toEndOf="@+id/inventoryBtn"
         android:id="@+id/quick_item_slot_RelativeLayout"
         android:visibility="visible"
-        android:background="@android:color/transparent"></RelativeLayout>
+        android:background="@android:color/transparent">
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

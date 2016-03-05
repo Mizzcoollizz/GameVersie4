@@ -15,6 +15,7 @@ import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Raw_Materials.Rock;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
+import com.thuis.gameversie2.Combat.Combat_Fragment;
 
 import java.io.IOException;
 
@@ -56,6 +57,11 @@ public class Main_Menu_Activity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void GoTo_Defence(View v) {
+        Intent intent = new Intent(this, Combat_Fragment.class);
+        startActivity(intent);
+    }
+
     public void startNewGame(View v) {
         GamePanel.setPlayer(new MainCharacter("male", "human", "me", getContext()));
         GamePanel.setInventory(new Inventory());
@@ -66,6 +72,7 @@ public class Main_Menu_Activity extends AppCompatActivity {
         Intent intent = new Intent(this, GameView_Activity.class);
         startActivity(intent);
     }
+
 
 
 }

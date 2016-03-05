@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/minimap_eljakim"
-    android:onClick="startNewGame"
-    android:background="@drawable/minimap_gamethuis">
+    android:background="@drawable/minimap_gamethuis"
+    android:onClick="GoTo_MiniMap">
 
 </LinearLayout>

@@ -17,7 +17,7 @@ import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Map.MapHandler;
 import com.thuis.gameversie2.MapScreen.Quick_Item_Slot_Menu.Quick_Item_Slot_Menu_Fragment;
 import com.thuis.gameversie2.R;
-
+import com.thuis.gameversie2.Combat.Combat_Fragment;
 
 public class GameView_Activity extends Activity {
 
@@ -75,10 +75,11 @@ public class GameView_Activity extends Activity {
 
 
 
-//  Combat buttons! DO NOT TOUCH!!
-    public void DefenceButtonOnClick(View view) {
-        System.out.print("niet zeuren hier werk ik nog aan!");
-    }
+
+    //public void GoTo_Defence(View view) {
+      //  Intent intent = new Intent(this, Combat_Fragment.class);
+       // startActivity(intent);
+   // }
 // MiniMap
     public void GoTo_MiniMap(View view){
         setContentView(R.layout.minimap_eljakim);

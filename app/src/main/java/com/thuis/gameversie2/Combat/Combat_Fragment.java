@@ -1,6 +1,7 @@
 package com.thuis.gameversie2.Combat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -17,9 +18,10 @@ import android.widget.TextView;
 
 import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.GamePanel;
-import com.thuis.gameversie2.R;
 import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.R;
+import android.app.FragmentManager;
+
 
 
 
@@ -54,7 +56,7 @@ public class Combat_Fragment extends Fragment {
     }
 
     public Combat_Fragment() {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -115,9 +117,10 @@ public class Combat_Fragment extends Fragment {
 
 // Code start hier
 
-    public class Combat_Fragment_Inner {
+    public class CombatTester {
         public void DefenceButtonOnClick(View view) {
-            System.out.print("niet zeuren hier werk ik nog aan!");
+            //Intent intent = new Intent(this, Combat_Fragment.Class);
+            //startActivity(intent);
         }
 
     }
