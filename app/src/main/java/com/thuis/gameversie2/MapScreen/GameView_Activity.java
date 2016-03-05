@@ -79,6 +79,11 @@ public class GameView_Activity extends Activity {
     public void DefenceButtonOnClick(View view) {
         System.out.print("niet zeuren hier werk ik nog aan!");
     }
+// MiniMap
+    public void GoTo_MiniMap(View view){
+        setContentView(R.layout.minimap_eljakim);
+
+    }
 
     @Override
     protected void onStop() {

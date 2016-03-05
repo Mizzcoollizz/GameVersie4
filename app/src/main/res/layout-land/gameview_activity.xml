@@ -81,8 +81,6 @@
         android:scaleType="centerCrop"
         android:onClick="onQuickItemMenuClick" />
 
-
-
     <ImageButton
         android:layout_width="111dp"
         android:layout_height="111dp"
@@ -109,7 +107,9 @@
         android:src="@drawable/map"
         android:layout_below="@+id/SettingsBtn"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:nestedScrollingEnabled="false"
+        android:onClick="GoTo_MiniMap" />
 
     <RelativeLayout
         android:layout_width="match_parent"
