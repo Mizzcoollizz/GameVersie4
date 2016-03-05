@@ -12,6 +12,7 @@ import com.thuis.gameversie2.Interactive.Bush;
 import com.thuis.gameversie2.Interactive.Field;
 import com.thuis.gameversie2.Interactive.Interactive;
 import com.thuis.gameversie2.Interactive.Tree;
+import com.thuis.gameversie2.Interactive.Water;
 import com.thuis.gameversie2.Items.Berries.Raspberry;
 import com.thuis.gameversie2.Map.CollisionObject;
 import com.thuis.gameversie2.Map.ItemSpawnArea;
@@ -30,7 +31,10 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Elize on 31-7-2015.
@@ -52,6 +56,9 @@ public class JsonMapParser {
     private int map_width = 0;
     private int map_height = 0;
     private int tile_width = 0;
+    private int tile_height = 0;
+
+
 
     /**
      * Constructor for JsonMapParser.
@@ -70,9 +77,9 @@ public class JsonMapParser {
             rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             JSONObject completeMapObject = null;
 
-            try{
+
                 int size = is.available();
-                if(size < Runtime.getRuntime().freeMemory()) {
+                if(size < Runtime.getRuntime().freeMemory() && size > 0) {
                     bytes = new byte[size];
                     is.read(bytes);
                     completeMapObject = new JSONObject(new String(bytes, "UTF-8"));
@@ -80,14 +87,13 @@ public class JsonMapParser {
                 }else {
                     parseMapAlternatively(rd);
                 }
-            }catch(OutOfMemoryError ex){
-                parseMapAlternatively(rd);
-            }
+
         } catch (IOException e) {
             e.printStackTrace();
         }catch (JSONException e) {
             e.printStackTrace();
         }catch(OutOfMemoryError ex) {
+            Log.i("tag", "OutOfMemoryError, parsing alternatively...");
             ex.printStackTrace();
             parseMapAlternatively(rd);
         }finally{
@@ -141,7 +147,7 @@ public class JsonMapParser {
     }
 
     private void parseMapAlternatively(Reader rd){
-        Log.i("tag", "parse Alternatively");
+
         JsonReader jsonReader = new JsonReader(rd);
         jsonReader.setLenient(true);
         readJsonMapByJsonReader(jsonReader);
@@ -157,6 +163,9 @@ public class JsonMapParser {
                     case "tilewidth":
                         tile_width = jsonReader.nextInt();
                         break;
+                    case "tileheight":
+                        tile_height = jsonReader.nextInt();
+                        break;
                     case "layers":
                         setLayersbyReader(jsonReader);
                         break;
@@ -171,7 +180,7 @@ public class JsonMapParser {
             jsonReader.endObject();
             jsonReader.close();
 
-            mapToParse.setMap(map_width, map_height, tile_width, layersToDraw, tilesCollection,
+            mapToParse.setMap(map_width, map_height, tile_width, tile_height, layersToDraw, tilesCollection,
                     context, collisionObjects, interactiveObjects, itemSpawnAreas);
 
         } catch (JSONException e) {
@@ -185,7 +194,6 @@ public class JsonMapParser {
     }
 
     private void setTilesArrayUsingReader(JsonReader jsonReader) throws IOException, JSONException {
-
 
         jsonReader.beginArray();
         while(jsonReader.hasNext()){
@@ -368,6 +376,7 @@ public class JsonMapParser {
             map_width = completeMapObject.getInt("width");
             map_height = completeMapObject.getInt("height");
             tile_width = completeMapObject.getInt("tilewidth");
+            tile_height = completeMapObject.getInt("tileheight");
 
             //get the layers with id
 
@@ -381,7 +390,7 @@ public class JsonMapParser {
                     collisionObjects = getCollisionObjectLayer(layersArray.getJSONObject(layerInt));
                 //Get other tilelayers
                 }else if(type.equals("tilelayer")){
-                    Layer layer = getTileLayer(map_width, map_width, layersArray.getJSONObject(layerInt));
+                    Layer layer = getTileLayer(map_width, map_height, layersArray.getJSONObject(layerInt));
                     layersToDraw.add(layer);
                 }else if(type.equals("objectgroup") && layersArray.getJSONObject(layerInt).getString("name").equals("Interactive")){
                     interactiveObjects = getInteractiveObjectLayer(layersArray.getJSONObject(layerInt));
@@ -390,7 +399,7 @@ public class JsonMapParser {
                 }
 
             }
-            layersArray = null;
+
 
 
             //get the tilesets
@@ -419,9 +428,9 @@ public class JsonMapParser {
                 }
 
             }
-            tilesetArray = null;
 
-            mapToParse.setMap(map_width, map_height, tile_width, layersToDraw, tilesCollection,
+
+            mapToParse.setMap(map_width, map_height, tile_width, tile_height, layersToDraw, tilesCollection,
                     context, collisionObjects, interactiveObjects, itemSpawnAreas);
 
         } catch (JSONException e) {
@@ -452,14 +461,21 @@ public class JsonMapParser {
 
         JSONArray objectsArray = layer.getJSONArray("objects");
         for(int i = 0; i < objectsArray.length(); i++){
-            int x = (int)objectsArray.getJSONObject(i).get("x");
-            int y = (int)objectsArray.getJSONObject(i).get("y");
-            int height = (int)objectsArray.getJSONObject(i).get("height");
-            int width = (int)objectsArray.getJSONObject(i).get("width");
-            String type = objectsArray.getJSONObject(i).getString("type");
+            JSONObject collisionJSONObject = objectsArray.getJSONObject(i);
+            int x = (int)collisionJSONObject.get("x");
+            int y = (int)collisionJSONObject.get("y");
+            int height = (int)collisionJSONObject.get("height");
+            int width = (int)collisionJSONObject.get("width");
+            String type = collisionJSONObject.getString("type");
 
             boolean lowObject = false;
-            CollisionObject collisionObject = new CollisionObject(x, y, type,  lowObject, height, width);
+            if(collisionJSONObject.has("properties")) {
+                JSONObject properties = collisionJSONObject.getJSONObject("properties");
+                if (properties.has("lowObject")) {
+                    lowObject = properties.getBoolean("lowObject");
+                }
+            }
+            CollisionObject collisionObject = new CollisionObject(x, y, type,  lowObject, width, height);
             collisionObjects.add(collisionObject);
         }
         return collisionObjects;
@@ -469,29 +485,41 @@ public class JsonMapParser {
 
         ArrayList<Interactive> interactiveObjects = new ArrayList<>();
 
+
         JSONArray objectsArray = layer.getJSONArray("objects");
         for(int i = 0; i < objectsArray.length(); i++){
             int x = (int)objectsArray.getJSONObject(i).get("x");
             int y = (int)objectsArray.getJSONObject(i).get("y");
             int height = (int)objectsArray.getJSONObject(i).get("height");
             int width = (int)objectsArray.getJSONObject(i).get("width");
-
             String type = objectsArray.getJSONObject(i).getString("type");
             int growState = 0;
+            boolean collision = false;
+            boolean lowObject = false;
 
             if(objectsArray.getJSONObject(i).has("properties")){
                 JSONObject properties = objectsArray.getJSONObject(i).getJSONObject("properties");
                 if(properties.has("growstate")){
                     growState = properties.getInt("growstate");
                 }
+                if(properties.has("lowObject")){
+                    lowObject = properties.getBoolean("lowObject");
+                }
+                if(properties.has("collision")){
+                    collision = properties.getBoolean("collision");
+                }
             }
 
-            interactiveObjects.add(getInteractiveObjectByType(x, y, height, width, type, growState));
+            Interactive interactive = getInteractiveObjectByType(x, y, height, width, type, growState);
+
+
+                interactiveObjects.add(interactive);
+
+
 
         }
 
-
-        return interactiveObjects;
+        return new ArrayList(Arrays.asList(interactiveObjects.toArray()));
     }
 
     /**
@@ -505,17 +533,19 @@ public class JsonMapParser {
      */
     private Interactive getInteractiveObjectByType(int x, int y, int height, int width, String type, int growState) {
         //TODO first add a new ItemSpawnArea to the map!
-        if (type.equals("full_raspberry_bush")) {
-            return new Bush(x, y, width, height, true, new Raspberry());
-        } else if (type.equals("empty_raspberry_bush")) {
-            return new Bush(x, y, width, height, false, new Raspberry());
-        }else if(type.equals("field")){
-            return new Field(x, y, width, height);
-        }else if(type.equals("tree")){
-            return new Tree(x, y, width, height, growState);
-        }
-        else{
-            return null;
+        switch (type) {
+            case "full_raspberry_bush":
+                return new Bush(x, y, width, height, true, new Raspberry());
+            case "empty_raspberry_bush":
+                return new Bush(x, y, width, height, false, new Raspberry());
+            case "field":
+                return new Field(x, y, width, height);
+            case "tree":
+                return new Tree(x, y, width, height, growState);
+            case "water":
+                return new Water(x, y, width, height);
+            default:
+                return null;
         }
     }
 
@@ -524,7 +554,7 @@ public class JsonMapParser {
         int[][] layerCoordinates = new int[map_height][map_width];
         int[] layerWithId = new int[map_width * map_height];
         
-        String name = layerObject.getString("name").toLowerCase().toString();
+        String name = layerObject.getString("name").toLowerCase();
         JSONArray layerData = layerObject.getJSONArray("data");
         for (int i2 = 0; i2 < map_height * map_width; i2++) {
 
@@ -542,14 +572,18 @@ public class JsonMapParser {
     }
 
     public Bitmap loadImage(String path) {
-        AssetManager mngr = context.getAssets();
-        InputStream is2 = null;
-        try {
-            is2 = mngr.open(path);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            return BitmapFactory.decodeStream(is2);
+
+            AssetManager mngr = context.getAssets();
+            InputStream is2 = null;
+            try {
+                is2 = mngr.open(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+                Bitmap newBitmamp = BitmapFactory.decodeStream(is2);
+                return newBitmamp;
+
+
         }
-    }
+
 }

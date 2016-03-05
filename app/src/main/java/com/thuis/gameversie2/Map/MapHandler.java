@@ -25,9 +25,9 @@ public class MapHandler {
     }
 
     public static void setFarm(){
-        if(GamePanel.getPlayerHomeMap() == null || GamePanel.getPlayerHomeMap().equals(null)){
+        if(GamePanel.getPlayerHomeMap() == null ){
             PlayerHomeMap map = new PlayerHomeMap();
-            jsonMapParser = new JsonMapParser(Main_Menu_Activity.getContext(), map);
+            //jsonMapParser = new JsonMapParser(Main_Menu_Activity.getContext(), map);
             currentMap = map;
             GamePanel.setPlayerHomeMap(map);
         }else{

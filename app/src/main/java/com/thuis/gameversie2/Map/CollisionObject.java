@@ -27,7 +27,7 @@ public class CollisionObject {
         return width;
     }
 
-    public CollisionObject(long xLocation, long yLocation, String type, boolean lowObject, float height, float width) {
+    public CollisionObject(long xLocation, long yLocation, String type, boolean lowObject, float width, float height) {
         this.xLocation = xLocation;
         this.yLocation = yLocation;
         this.type = type;
@@ -35,14 +35,14 @@ public class CollisionObject {
         this.height = height;
         this.width = width;
     }
-//
-//    public CollisionObject(long xLocation, long yLocation, String type, boolean lowObject) {
-//        this.xLocation = xLocation;
-//        this.yLocation = yLocation;
-//        this.type = type;
-//        this.lowObject = lowObject;
-//
-//    }
+
+    public CollisionObject(long xLocation, long yLocation, boolean lowObject, float width,  float height) {
+        this.xLocation = xLocation;
+        this.yLocation = yLocation;
+        this.lowObject = lowObject;
+        this.height = height;
+        this.width = width;
+    }
 
     public long getXLocation() {
         return xLocation;
@@ -61,11 +61,7 @@ public class CollisionObject {
 
         Rect playerRect = player.getRect();
         Rect rect = new Rect(leftSide, topSide,rightSide, bottomSide);
-        if(checkIntersection(rect, playerRect, player.getDirection())){
-            return true;
-        }else{
-            return false;
-        }
+        return checkIntersection(rect, playerRect, player.getDirection());
     }
 
     public static boolean checkIntersection(Rect collisionRect, Rect player, String direction) {
@@ -75,11 +71,7 @@ public class CollisionObject {
             return true;
         }else if(direction.equals("down") && player.bottom >= collisionRect.top){
             return true;
-        }else if(direction.equals("up") && player.top <= collisionRect.bottom){
-            return true;
-        }else{
-            return false;
-        }
+        }else return direction.equals("up") && player.top <= collisionRect.bottom;
     }
 
 }

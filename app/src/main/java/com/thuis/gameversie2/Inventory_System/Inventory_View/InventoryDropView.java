@@ -17,4 +17,6 @@ public interface InventoryDropView {
     Inventory_Slot getItemSlot();
     boolean dropItem(Item item, InventoryDropView dropView);
     Rect getItemImageViewBounds();
+
+    
 }

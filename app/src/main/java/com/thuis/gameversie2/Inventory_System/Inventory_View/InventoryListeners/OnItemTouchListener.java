@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,29 +31,38 @@ public class OnItemTouchListener implements View.OnTouchListener {
     private boolean selected = false;
     ViewGroup parent = null;
     ViewGroup baseView = null;
+    private static InventoryDropView selectedInventoryDropView = null;
+    private GridView gridView = null;
 
 
     public OnItemTouchListener(Context context, ViewGroup parent){
         this.parent = parent;
         this.baseView = (ViewGroup)((Activity) context).findViewById(R.id.parentViewInventoryActivity);
+        this.gridView = (GridView) ((Activity) context).findViewById(R.id.inventoryGridView);
     }
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+
+        InventoryDropView inventoryDropView = (InventoryDropView) v;
+
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                onItemSelect((InventoryDropView) v);
+                onItemSelect(inventoryDropView);
+                createNewItemSlotIfPossible(inventoryDropView);
+                selectedInventoryDropView = inventoryDropView;
                 selected = true;
+
                 return true;
             case MotionEvent.ACTION_MOVE:
-                if(selected && checkHasItem(v)){
+                if(selected && checkHasItem(inventoryDropView)){
                     View viewToDrag = v;
                     ClipData data = ClipData.newPlainText((String) viewToDrag.getTag(),
                             String.valueOf(0));
                     InventoryCustomDragShadow shadow = new InventoryCustomDragShadow(viewToDrag);
                     viewToDrag.startDrag(data, shadow, viewToDrag, 0);
                 }else{
-                    if(v instanceof InventoryItemGridView) {
+                    if(inventoryDropView instanceof InventoryItemGridView) {
                         GridView gridView = (GridView) parent;
                         gridView.scrollBy(0, InventoryItemGridView.getWIDTH());
                     }
@@ -60,14 +70,26 @@ public class OnItemTouchListener implements View.OnTouchListener {
                 return true;
             case MotionEvent.ACTION_UP:
                 selected = false;
+
                 return true;
             default:
                 return false;
         }
     }
 
+    private void createNewItemSlotIfPossible(InventoryDropView inventoryDropView){
+        if(selectedInventoryDropView != null
+                && selectedInventoryDropView.equals(inventoryDropView)
+                && inventoryDropView.getItemSlot().getAmount() > 1
+                ){
+            GamePanel.getInventory().createNewSlotIfPossible(selectedInventoryDropView.getItemSlot().getAndRemoveFirst());
+            gridView.invalidateViews();
+
+        }
+    }
+
     //Check if the view is not empty.
-    private boolean checkHasItem(View v) {
+    private boolean checkHasItem(InventoryDropView v) {
         if(v instanceof InventoryItemGridView) {
             InventoryItemGridView view = (InventoryItemGridView) v;
             return view.checkHasItem();

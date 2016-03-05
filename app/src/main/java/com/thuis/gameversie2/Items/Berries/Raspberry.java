@@ -18,13 +18,24 @@ public class Raspberry extends Berry {
     private static int growTimePerStage = 0;
     private static int standardSellPrice = 0;
     private static int standardBuyPrice = 0;
+    private static int growStagesAmount = 0;
 
     public void setJsonGathered(boolean jsonGathered) {
         Raspberry.jsonGathered = jsonGathered;
     }
 
     public Raspberry() {
-        getRaspberryJson();
+        super.getBerryJson(this);
+    }
+
+    @Override
+    public  int getGrowStagesAmount() {
+        return growStagesAmount;
+    }
+
+    @Override
+    public void setGrowStagesAmount(int growStagesAmount) {
+        Raspberry.growStagesAmount = growStagesAmount;
     }
 
     @Override
@@ -49,12 +60,12 @@ public class Raspberry extends Berry {
 
     @Override
     protected void setType(String type) {
-        type = type;
+        Raspberry.type = type;
     }
 
     @Override
     protected void setName(String name) {
-        name = name;
+        Raspberry.name = name;
     }
 
     @Override
@@ -79,12 +90,12 @@ public class Raspberry extends Berry {
     }
 
     @Override
-    protected void setGrowTimePerStage(int i) {
+    public void setGrowTimePerStage(int i) {
         growTimePerStage = i;
     }
 
     @Override
-    protected int getGrowTimePerStage() {
+    public int getGrowTimePerStage() {
         return growTimePerStage;
 
     }
@@ -107,11 +118,7 @@ public class Raspberry extends Berry {
     }
 
 
-    private void getRaspberryJson(){
 
-            super.getBerryJson(this);
-
-    }
 
     @Override
     protected String getPath() {

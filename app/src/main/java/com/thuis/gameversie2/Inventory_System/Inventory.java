@@ -37,10 +37,8 @@ public class Inventory {
         return level;
     }
 
-    public boolean add(Item item){
-        if(checkAndAddIfItemIsInInventory_Slot(item)){
-            return true;
-        }else return createNewItemSlot(item);
+    public boolean add(Item item) {
+        return checkAndAddIfItemIsInInventory_Slot(item) || createNewItemSlot(item);
     }
 
     public boolean addItemSlot(Inventory_Slot slotToAdd) {
@@ -122,12 +120,32 @@ public class Inventory {
 
     public boolean mergeInventorySlots(Inventory_Slot draggingInventorySlot, Inventory_Slot dropInventorySlot){
 
-        while(dropInventorySlot.hasRoom()){
+        while(dropInventorySlot.hasRoom() && !draggingInventorySlot.isEmpty()){
             dropInventorySlot.add(draggingInventorySlot.getAndRemoveFirst());
         }
         return true;
     }
 
+    public boolean createNewSlotIfPossible(Item item){
+        int i = getFirstEmptySlotPosition();
+        if(i != -1){
+            Inventory_Slot new_inventory_slot = new Inventory_Slot(item);
+            putItem(new_inventory_slot, i);
+            return true;
+        }
+        return false;
+    }
+
+    private int getFirstEmptySlotPosition(){
+        ArrayList<Inventory_Slot> allSlots = getAllSlots();
+        for(int i = 0; i < allSlots.size(); i++){
+            Inventory_Slot inventory_slot = allSlots.get(i);
+            if(inventory_slot.isEmpty()){
+                return i;
+            }
+        }
+        return -1;
+    }
 
 
 }

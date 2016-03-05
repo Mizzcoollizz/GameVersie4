@@ -14,6 +14,9 @@ import com.thuis.gameversie2.Inventory_System.Inventory;
 import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Raw_Materials.Rock;
+import com.thuis.gameversie2.JsonParsers.JsonMapParser;
+import com.thuis.gameversie2.Map.MapHandler;
+import com.thuis.gameversie2.Map.Maps.PlayerHomeMap;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 
 import java.io.IOException;
@@ -63,8 +66,11 @@ public class Main_Menu_Activity extends AppCompatActivity {
         //Intent intent = new Intent(this, GameView_Activity.class);
         GamePanel.getInventory().add(new Rock());
         GamePanel.getPlayer().setItemHolding(new Inventory_Slot(new Rock()));
+        MapHandler.setFarm();
         Intent intent = new Intent(this, GameView_Activity.class);
         startActivity(intent);
+
+
     }
 
 

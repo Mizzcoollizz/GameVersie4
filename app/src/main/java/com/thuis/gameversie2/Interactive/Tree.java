@@ -3,6 +3,7 @@ package com.thuis.gameversie2.Interactive;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Map.CollisionObject;
 import com.thuis.gameversie2.Map.MapHandler;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
@@ -33,16 +34,16 @@ public class Tree extends Interactive{
         if(imagesPerState == null){
             imagesPerState = new Bitmap[MAX_GROWSTATE + 1];
             imagesPerState[0] = null; //TODO add sprout img
-            imagesPerState[1] = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.boom_stand1);
-            imagesPerState[2] = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.boom_stand2);
-            imagesPerState[3] = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.boom_stand3);
-            imagesPerState[4] = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.boom_omgehakt1);
+            imagesPerState[1] = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.boom_stand1);
+            imagesPerState[2] = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.boom_stand2);
+            imagesPerState[3] = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.boom_stand3);
+            imagesPerState[4] = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.boom_omgehakt1);
         }
     }
 
 
     public Tree(long xLocation, long yLocation, int width, int height, int growState) {
-        super(xLocation, yLocation, width, height);
+        super(xLocation, yLocation, width, height, true, false);
         this.growState = growState;
         setImage();
     }
@@ -94,13 +95,20 @@ public class Tree extends Interactive{
     private void setWidthAndHeight() {
         switch(growState){
             case 0:
-                this.height = 1;
+//                this.height = 1;
+                this.lowObject = true;
                 break;
-            case 1: this.height = 1;
+            case 1:
+//                this.height = 1;
+                this.lowObject = false;
                 break;
-            case 2: this.height = 2;
+            case 2:
+//                this.height = 2;
+                this.lowObject = false;
                 break;
-            case 3: this.height = 3;
+            case 3:
+//                this.height = 3;
+                this.lowObject = false;
                 break;
         }
     }
