@@ -40,7 +40,7 @@ public class GameView_Activity extends Activity {
         context = this;
         GamePanel.setCurrentContext(this);
 
-        MapHandler.setFarm();
+//        MapHandler.setFarm();
     }
 
     public static Button getLeftBtn() {

@@ -42,7 +42,7 @@ public class Tomato extends Crop {
     }
 
     @Override
-    protected void setGrowStages(int i) {
+    protected void setGrowStagesAmount(int i) {
         growStages = i;
     }
 
@@ -155,6 +155,11 @@ public class Tomato extends Crop {
     @Override
     public int getGrowTimePerStage() {
         return growTimePerStage;
+    }
+
+    @Override
+    public int getGrowStagesAmount() {
+        return growStages;
     }
 
 }

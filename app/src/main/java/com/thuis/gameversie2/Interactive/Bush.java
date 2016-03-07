@@ -1,6 +1,7 @@
 package com.thuis.gameversie2.Interactive;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 
 import com.thuis.gameversie2.GamePanel;
@@ -13,23 +14,31 @@ import com.thuis.gameversie2.Items.Tools.Tool;
  * Created by Elize on 15-8-2015.
  */
 public class Bush extends Interactive{
-    int reGrowTime = 0;
-    Berry berry = null;
-    int state = 0;
-    Bitmap[] images = null;
-    int growDay = 0;
-    boolean regrown = false;
+    private Berry berry = null;
+    private int state = 0;
+    private Bitmap[] images = null;
+    private int growDay = 0;
+    private boolean regrown = false;
 
     public Bush(long xLocation, long yLocation, int width, int height, boolean _regrown, Berry _berry) {
-        super(xLocation, yLocation, width, height);
+        //Collision and lowObject
+        super(xLocation, yLocation, width, height, true, true);
         this.regrown = _regrown;
         this.berry = _berry;
+        setStartProperties();
+    }
+
+    private void setStartProperties() {
+        if(regrown){
+            setState(berry.getGrowStagesAmount());
+        }
     }
 
     private void harvest(){
         //Todo check create Bush interaction
         if(regrown){
             if(GamePanel.getInventory().add(Item.getNewInstance(getBerry()))){
+                Log.i("tag", "true");
                 this.regrown = false;
                 this.growDay = 0;
                 this.state = 0;
@@ -57,7 +66,20 @@ public class Bush extends Interactive{
 
     @Override
     public void update() {
+        grow();
+    }
 
+    public void grow(){
+        if(state != getBerry().getGrowStagesAmount()){
+            growDay++;
+            if(growDay == getBerry().getGrowTimePerStage() && state != getBerry().getGrowStagesAmount()){
+                state++;
+                growDay = 0;
+                if(state == getBerry().getGrowStagesAmount()){
+                    regrown = true;
+                }
+            }
+        }
     }
 
     @Override
@@ -71,10 +93,6 @@ public class Bush extends Interactive{
 
     public void setState(int state) {
         this.state = state;
-    }
-
-    public int getReGrowTime() {
-        return reGrowTime;
     }
 
     public Berry getBerry() {

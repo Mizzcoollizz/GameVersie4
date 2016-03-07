@@ -48,7 +48,7 @@ public abstract class Crop extends Item {
 	 *
 	 * @param growStages: the amount of growstages with the harvest stage included
 	 * @param growTime: The growtime of the crop
-	 * @return: The time the crop has to grow to get to the next growstate.
+	 * @return : The time the crop has to grow to get to the next growstate.
 	 */
 	public static int calculateGrowTimePerStage(int growStages, int growTime) {
 		int modulo = growTime % (growStages - 1);
@@ -90,7 +90,7 @@ public abstract class Crop extends Item {
 			}
 			crop.setGrowStateImages(growStateImages);
 			int growStages = growStateImages.length;
-			crop.setGrowStages(growStages);
+			crop.setGrowStagesAmount(growStages - 1);
 
 			crop.setGrowTimePerStage(calculateGrowTimePerStage(growStages, totalGrowTimeInDays));
 			super.setPricing(crop);
@@ -105,7 +105,7 @@ public abstract class Crop extends Item {
 
 	protected abstract void setGrowTime(int growtime);
 
-	protected abstract void setGrowStages(int i);
+	protected abstract void setGrowStagesAmount(int i);
 
 	protected abstract void setSeason(String season);
 
@@ -118,5 +118,7 @@ public abstract class Crop extends Item {
 	public abstract Bitmap getGrowingImage(int index);
 
 	public abstract int getGrowTimePerStage();
+
+	public abstract int getGrowStagesAmount();
 
 }

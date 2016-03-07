@@ -31,14 +31,13 @@ public class OnInteractionTouch implements View.OnTouchListener {
     private void checkInteraction(MotionEvent event) {
         if(GamePanel.getPlayer().getOnTouch(event)){
             GamePanel.getPlayer().manageOnTouch();
-
         }else{
             checkAndInteract(event);
         }
     }
 
     private void checkAndInteract(MotionEvent event){
-        Interactive interactive = MapHandler.getCurrentMap().checkInteraction((int) event.getX(), (int) event.getY());
+        Interactive interactive = MapHandler.getCurrentMap().getInteractiveObjectByLocation((int) event.getX(), (int) event.getY());
         if(interactive != null) {
             if(GamePanel.getPlayer().isHoldingTool()){
                 interactive.onInteraction(GamePanel.getPlayer().getToolHolding());

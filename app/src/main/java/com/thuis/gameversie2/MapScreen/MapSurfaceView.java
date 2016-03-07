@@ -3,6 +3,8 @@ package com.thuis.gameversie2.MapScreen;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -15,6 +17,7 @@ import com.thuis.gameversie2.Interactive.Field;
 import com.thuis.gameversie2.Interactive.Interactive;
 import com.thuis.gameversie2.Items.Item;
 import com.thuis.gameversie2.Items.Spawnable_Item;
+import com.thuis.gameversie2.Map.CollisionObject;
 import com.thuis.gameversie2.Map.ItemSpawnArea;
 import com.thuis.gameversie2.Map.Layer;
 import com.thuis.gameversie2.Map.Maps.Map;
@@ -147,18 +150,20 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
             }
 
             drawLayer(backgroundLayer, canvas);
-            drawLayer(plantsLayer,canvas);
+            drawLayer(plantsLayer, canvas);
             drawInteractiveLayer(canvas);
             drawItemsBehindPlayer(canvas);
             player.draw(canvas);
             drawItemsInFrondOfPlayer(canvas);
+
+
         }
     }
 
     private void drawItemsInFrondOfPlayer(Canvas canvas) {
         ArrayList<Interactive> itemsInScreen = MapHandler.getCurrentMap().getItemSpawnAreasInScreen();
         for(Interactive interactive: itemsInScreen) {
-            if (interactive.getYLocation() > player.getMapY()) {
+            if (interactive.getYLocation() > GamePanel.getPlayer().getMapY()) {
                 drawItem(interactive, canvas);
             }
         }
@@ -195,21 +200,23 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
     private void drawItemsBehindPlayer(Canvas canvas) {
         ArrayList<Interactive> itemsInScreen = MapHandler.getCurrentMap().getItemSpawnAreasInScreen();
         for(Interactive interactive: itemsInScreen) {
-            if (interactive.getYLocation() <= player.getMapY()) {
+            if (interactive.getYLocation() <= GamePanel.getPlayer().getMapY()) {
                     drawItem(interactive, canvas);
-                }
             }
         }
+    }
 
 
     private void drawInteractiveLayer(Canvas canvas) {
         ArrayList<Interactive> interactiveArrayList = MapHandler.getCurrentMap().getAllInteractiveOnScreen();
         for(Interactive object: interactiveArrayList){
             try {
-                Bitmap image = object.getImage();
-                long x = object.getXLocation() - getScreenX();
-                long y = object.getYLocation() - getScreenY();
-                canvas.drawBitmap(image, x, y, null);
+                if(object.getImage() != null) {
+                    Bitmap image = object.getImage();
+                    long x = object.getXLocation() - getScreenX();
+                    long y = object.getYLocation() - getScreenY();
+                    canvas.drawBitmap(image, x, y, null);
+                }
             }catch(NullPointerException ex){
                 Log.i("tag", "Nullpointerexception: interactive:" + object.getClass().toString());
             }
@@ -234,8 +241,8 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
 
     private void drawLayer(Layer layer, Canvas canvas){
         if(layer != null) {
-            screenX = player.getMapX() - (long) (screen_width / 2.0);
-            screenY = player.getMapY() - (long) (screen_height / 2.0);
+            screenX = GamePanel.getPlayer().getMapX() - (long) (screen_width / 2.0);
+            screenY = GamePanel.getPlayer().getMapY() - (long) (screen_height / 2.0);
 
             int startTileX = calculateStartTileX();
             int startTileY = calculateStartTileY();
@@ -295,5 +302,9 @@ public class MapSurfaceView extends SurfaceView implements SurfaceHolder.Callbac
 
     public void update() {
         GamePanel.getPlayer().update();
+    }
+
+    private boolean isTouchInRect(Rect rect, long x, long y){
+        return rect.contains((int) (x - getScreenX()), (int) (y - getScreenY()));
     }
 }

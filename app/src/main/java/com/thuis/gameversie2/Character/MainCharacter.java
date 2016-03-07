@@ -31,7 +31,7 @@ public class MainCharacter {
 	private String hairColor = "Blond";
 
 	private Context context = null;
-	private Bitmap toolHoldingInventoryImage;
+	//private Bitmap toolHoldingInventoryImage;
 
 	public int getSpeed() {
 		return speed;
@@ -73,7 +73,7 @@ public class MainCharacter {
 
 	private Inventory_Slot itemHolding = null;
 
-	private Tool toolHolding = null;
+	//private Tool toolHolding = null;
 
 	public void setItemHolding(Inventory_Slot itemHolding) {
 		this.itemHolding = itemHolding;
@@ -83,11 +83,11 @@ public class MainCharacter {
 		return itemHolding;
 	}
 
-	public static void setMapX(long mapX) {
+	public void setMapX(long mapX) {
 		MainCharacter.mapX = mapX;
 	}
 
-	public static void setMapY(long mapY) {
+	public void setMapY(long mapY) {
 		MainCharacter.mapY = mapY;
 	}
 
@@ -96,22 +96,22 @@ public class MainCharacter {
 		animation.setCurrentDirection(direction);
 	}
 
-	public static int getMapTileY() {
+	public int getMapTileY() {
 		return mapTileY;
 	}
 
-	public static int getMapTileX() {
+	public int getMapTileX() {
 		return mapTileX;
 	}
 
-	public static void walk(int X, int Y) {
+	public void walk(int X, int Y) {
 		if(checkCollision()) {
 			mapX += X;
 			mapY += Y;
 		}
 	}
 
-	private static boolean checkCollision() {
+	private boolean checkCollision() {
 //		if(checkBorderCollision() || MapHandler.getCurrentMap().checkObjectCollision()){
 //			return false;
 //		}else{
@@ -128,23 +128,23 @@ public class MainCharacter {
 		return height;
 	}
 
-	private static boolean checkBorderCollision(){
+	private boolean checkBorderCollision(){
 		return MapHandler.getCurrentMap().checkBorderCollision(getMapX(), getMapY(), getDirection());
 	}
 
-	public Tool getToolHolding() {
-		return toolHolding;
-	}
+//	public Tool getToolHolding() {
+//		return toolHolding;
+//	}
 
-	public void setToolHolding(Tool toolHolding) {
-		this.toolHolding = toolHolding;
-	}
+//	public void setToolHolding(Tool toolHolding) {
+//		this.toolHolding = toolHolding;
+//	}
 
-	public static long getMapX() {
+	public long getMapX() {
 		return mapX;
 	}
 
-	public static long getMapY() {
+	public long getMapY() {
 		return mapY;
 	}
 
@@ -261,7 +261,7 @@ public class MainCharacter {
 		return walking;
 	}
 
-	public static String getDirection() {
+	public String getDirection() {
 		return direction;
 	}
 
@@ -292,9 +292,9 @@ public class MainCharacter {
 	 */
 	public void manageOnTouch() {
 		if(itemHolding == null || itemHolding.isEmpty()){
-			Intent intent = new Intent(GameView_Activity.getContext(), Inventory_Activity.class);
-			GameView_Activity.getContext().startActivity(intent);
-		}else if(itemHolding != null && !itemHolding.isEmpty()){
+//			Intent intent = new Intent(GamePanel.getCurrentContext(), Inventory_Activity.class);
+//			GamePanel.getCurrentContext().startActivity(intent);
+		}else {
 			if(GamePanel.getInventory().addItemSlot(getItemHolding())){
 				this.itemHolding = new Inventory_Slot();
 			}else{
@@ -324,9 +324,9 @@ public class MainCharacter {
 		return inventoryImage;
 	}
 
-	public boolean isHoldingTool() {
-		return (getToolHolding() != null);
-	}
+//	public boolean isHoldingTool() {
+//		return (getToolHolding() != null);
+//	}
 
 	public Bitmap getItemHoldingInventoryImage() {
 		if(itemHolding != null && itemHolding.getItem() != null){
@@ -336,12 +336,47 @@ public class MainCharacter {
 		}
 	}
 
-	public Bitmap getToolHoldingInventoryImage() {
-		if(toolHolding != null){
-			return toolHolding.getInventoryImage();
-		}else{
-			return Item.borderImageBitmap;
+//	public Bitmap getToolHoldingInventoryImage() {
+//		if(toolHolding != null){
+//			return toolHolding.getInventoryImage();
+//		}else{
+//			return Item.borderImageBitmap;
+//		}
+//
+//	}
+
+	public Rect getInteractionRect(){
+		int rectWidth = MapHandler.getCurrentMap().getTile_width() * 3;
+		int rectHeight = MapHandler.getCurrentMap().getTile_height() * 3;
+
+		int left = 0;
+		int top = 0;
+		int right = 0;
+		int bottom = 0;
+
+		switch(direction){
+			case "up":
+				left = (int) getMapX() - (rectWidth / 2);
+				top = (int) getMapY() - (rectHeight);
+				break;
+			case "down":
+				left = (int) getMapX() - (rectWidth / 2);
+				top = (int) getMapY();
+				break;
+			case "left":
+				left = (int) getMapX() - rectWidth;
+				top = (int) getMapY() - (rectHeight / 2);
+				break;
+			case "right":
+				left = (int) getMapX();
+				top = (int) getMapY() - (rectHeight / 2);
+
+				break;
 		}
 
+		right = left + rectWidth;
+		bottom = top + rectHeight;
+
+		return new Rect(left, top, right, bottom);
 	}
 }

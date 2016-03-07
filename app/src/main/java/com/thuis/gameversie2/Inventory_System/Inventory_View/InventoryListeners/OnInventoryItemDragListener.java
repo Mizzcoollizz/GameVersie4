@@ -45,10 +45,7 @@ public class OnInventoryItemDragListener implements View.OnDragListener {
                 return true;
             case DragEvent.ACTION_DROP:
                 dropItem((int) event.getX(), (int) event.getY(), (InventoryDropView) event.getLocalState());
-                BaseAdapter baseAdapter = (BaseAdapter) gridView.getAdapter();
-                baseAdapter.notifyDataSetChanged();
                 gridView.invalidateViews();
-
                 return true;
             case DragEvent.ACTION_DRAG_EXITED:
                 return true;

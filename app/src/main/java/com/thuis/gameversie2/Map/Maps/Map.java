@@ -2,6 +2,8 @@ package com.thuis.gameversie2.Map.Maps;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
+import android.util.Log;
 
 import com.thuis.gameversie2.Character.MainCharacter;
 import com.thuis.gameversie2.GamePanel;
@@ -15,6 +17,7 @@ import com.thuis.gameversie2.Map.Layer;
 import com.thuis.gameversie2.Map.Tile;
 import com.thuis.gameversie2.MapScreen.MapSurfaceView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +26,7 @@ import java.util.Random;
 /**
  * Created by Elize on 31-7-2015.
  */
-public abstract class Map {
+public abstract class Map implements Serializable {
 
     private int map_width = 0;
     private int map_height = 0;
@@ -82,6 +85,7 @@ public abstract class Map {
     public void setMap(int new_map_width,
                               int new_map_height,
                               int new_tile_width,
+                              int new_tile_height,
                               ArrayList<Layer> new_layers,
                               java.util.Map<Integer, Tile> newTilesCollection,
                               Context new_context, ArrayList<CollisionObject> newCollisionObjects,
@@ -92,7 +96,7 @@ public abstract class Map {
         map_width = new_map_width;
         map_height = new_map_height;
         tile_width = new_tile_width;
-        tile_height = tile_width;
+        tile_height = new_tile_height;
         layersToDraw = new_layers;
         tilesCollection = newTilesCollection;
         collisionObjects = newCollisionObjects;
@@ -112,18 +116,22 @@ public abstract class Map {
         long objectX = playerTileX;
         long objectY = playerTileY;
 
-        if(direction.equals("left")){
-            objectX -= 1;
-        }else if(direction.equals("right")){
-            objectX += 1;
-        }else if(direction.equals("up")){
-            objectY -= 1;
-        }else if(direction.equals("down")){
-            objectY += 1;
+        switch (direction) {
+            case "left":
+                objectX -= 1;
+                break;
+            case "right":
+                objectX += 1;
+                break;
+            case "up":
+                objectY -= 1;
+                break;
+            case "down":
+                objectY += 1;
+                break;
         }
 
-        long[] tile = {objectX, objectY};
-        return tile;
+        return new long[]{objectX, objectY};
     }
 
     public boolean checkObjectCollision() {
@@ -153,35 +161,40 @@ public abstract class Map {
 
         long[][] tiles = new long[3][2];
 
-            if (direction.equals("left")) {
+        switch (direction) {
+            case "left":
                 tiles[0][0] = objectX - 1;
                 tiles[1][0] = objectX - 1;
                 tiles[2][0] = objectX - 1;
                 tiles[0][1] = objectY - 1;
                 tiles[1][1] = objectY;
                 tiles[2][1] = objectY + 1;
-            } else if (direction.equals("right")) {
+                break;
+            case "right":
                 tiles[0][0] = objectX + 1;
                 tiles[1][0] = objectX + 1;
                 tiles[2][0] = objectX + 1;
                 tiles[0][1] = objectY - 1;
                 tiles[1][1] = objectY;
                 tiles[2][1] = objectY + 1;
-            } else if (direction.equals("up")) {
+                break;
+            case "up":
                 tiles[0][0] = objectX - 1;
                 tiles[1][0] = objectX;
                 tiles[2][0] = objectX + 1;
                 tiles[0][1] = objectY - 1;
                 tiles[1][1] = objectY - 1;
                 tiles[2][1] = objectY - 1;
-            } else if (direction.equals("down")) {
+                break;
+            case "down":
                 tiles[0][0] = objectX - 1;
                 tiles[1][0] = objectX;
                 tiles[2][0] = objectX + 1;
                 tiles[0][1] = objectY + 1;
                 tiles[1][1] = objectY + 1;
                 tiles[2][1] = objectY + 1;
-            }
+                break;
+        }
         return tiles;
 
     }
@@ -214,38 +227,38 @@ public abstract class Map {
      * @param touchY The y location of the tab on the screen.
      * @return The Interactive objects that the user is interacting with.
      * */
+    public Interactive getInteractiveObjectByLocation(int touchX, int touchY){
 
-    public Interactive checkInteraction(int touchX, int touchY){
-        Interactive tappedInteractive = null;
         touchX = touchX + (int)MapSurfaceView.getScreenX();
         touchY = touchY + (int)MapSurfaceView.getScreenY();
-        long[][] tiles = getNextThreeTiles();
         ArrayList<Interactive> interactivesOnScreen = getAllInteractiveOnScreen();
-        for(int i = 0; i < tiles.length; i++){
-            for(Interactive interactive: interactivesOnScreen){
-                if(interactive.getXLocation() == (tiles[i][0] * getMap_width()) && interactive.getYLocation() == (tiles[i][1]* getMap_height())) {
+
+            for (Interactive interactive : interactivesOnScreen) {
+                if (GamePanel.getPlayer().getInteractionRect().contains((int) interactive.getXLocation(), (int) interactive.getYLocation())) {
                     if (interactive.getRect().contains(touchX, touchY)) {
-                        tappedInteractive = interactive;
-                        break;
+                        return interactive;
                     }
                 }
             }
-        }
-        return tappedInteractive;
+        return null;
     }
 
     public ArrayList<Interactive> getAllInteractiveOnScreen(){
         ArrayList<Interactive> interactives = new ArrayList<>();
-
+        Rect screenRect = MapSurfaceView.getScreenRect();
         for(Interactive interactive: interactiveObjects){
-            if(MapSurfaceView.getScreenRect().contains(interactive.getRect())){
+
+            if(screenRect.contains(interactive.getRect())){
                 interactives.add(interactive);
+                interactive.onScreenEnter();
+            }else{
+                interactive.onScreenLeave();
             }
         }
 
-        for(Interactive interactive: interactives){
-            interactive.setCollision();
-        }
+//        for(Interactive interactive: interactives){
+//            interactive.setCollision();
+//        }
 
         return interactives;
     }

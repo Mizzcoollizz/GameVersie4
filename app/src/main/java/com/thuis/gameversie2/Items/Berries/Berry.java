@@ -24,14 +24,15 @@ import java.nio.charset.Charset;
  */
 public abstract class Berry extends Item {
 
-
-
     protected abstract void setGrowStateImages(Bitmap[] growStateImagesPaths);
 
     protected abstract void setGrowTime(int growTime);
 
     protected abstract void loadBerryImage(Bitmap image);
 
+    public abstract int getGrowStagesAmount();
+
+    public abstract void setGrowStagesAmount(int growStagesAmount);
 
 //    public Bitmap getGrowStateImages(int index) {
 //        try {
@@ -53,8 +54,8 @@ public abstract class Berry extends Item {
                 return;
             }
                 JSONObject json = getItemJSONObjectFromPath(berry.getPath());
-                int growtime = json.getInt("growtime");
-                berry.setGrowTime(growtime);
+                int growTime = json.getInt("growtime");
+                berry.setGrowTime(growTime);
                 berry.setName(json.getString("name"));
                 berry.setType(json.getString("type"));
                 berry.loadImage(super.getJsonImage(json.getString("image")));
@@ -67,8 +68,9 @@ public abstract class Berry extends Item {
                                     growStateImagesInJson.get(image).toString());
                 }
                 berry.setGrowStateImages(growStateImages);
-                int growstages = growStateImages.length;
-                berry.setGrowTimePerStage(Crop.calculateGrowTimePerStage(growstages, growtime));
+                int growStages = growStateImages.length;
+                berry.setGrowTimePerStage(Crop.calculateGrowTimePerStage(growStages, growTime));
+                berry.setGrowStagesAmount(growStages - 1);
                 super.setPricing(berry);
                 berry.setJsonGathered(true);
             }catch(JSONException e){
@@ -80,7 +82,7 @@ public abstract class Berry extends Item {
 
     public abstract Bitmap getGrowStateImages(int state);
 
-    protected abstract void setGrowTimePerStage(int i);
-    protected abstract int getGrowTimePerStage();
+    public abstract void setGrowTimePerStage(int i);
+    public abstract int getGrowTimePerStage();
 
   }

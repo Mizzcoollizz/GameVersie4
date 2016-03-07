@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 
+import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.Items.Crops.Crop;
 import com.thuis.gameversie2.Items.Spawnable_Item;
@@ -32,6 +33,7 @@ public class Field extends Interactive{
         if(isSown()){
             growDay++;
             setGrowStateByGrowDay();
+            setProperties();
         }
         setIsWatered(false);
     }
@@ -42,7 +44,7 @@ public class Field extends Interactive{
     }
 
     private void setGrowStateByGrowDay() {
-            if (growDay == crop.getGrowTimePerStage()) {
+            if (growDay == crop.getGrowTimePerStage() && growState != crop.getGrowStagesAmount()) {
                 growState++;
                 growDay = 0;
             }
@@ -66,20 +68,20 @@ public class Field extends Interactive{
         Random random = new Random();
         int number = random.nextInt(3);
         switch(number){
-            case 0: defaultImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.grond1 );
+            case 0: defaultImage = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.grond1 );
                 break;
-            case 1: defaultImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.grond2 );
+            case 1: defaultImage = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.grond2 );
                 break;
-            case 2: defaultImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.grond3 );
+            case 2: defaultImage = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.grond3 );
                 break;
         }
         
         if(wateredImage == null){
-            wateredImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.watered_field);
+            wateredImage = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.watered_field);
         }
         
         if(plowedImage == null){
-            plowedImage = BitmapFactory.decodeResource(GameView_Activity.getContext().getResources(), R.drawable.plowed_earth);
+            plowedImage = BitmapFactory.decodeResource(GamePanel.getCurrentContext().getResources(), R.drawable.plowed_earth);
         }
         
         
@@ -168,10 +170,23 @@ public class Field extends Interactive{
     }
 
     public boolean hasCrop(){
-        if(item != null){
-            return true;
-        }else{
-            return false;
+        return item != null;
+    }
+
+    private void setProperties() {
+        switch(growState){
+            case 0:
+                this.collision = false;
+                break;
+            case 1:
+                this.collision = true;
+                break;
+            case 2:
+                this.collision = true;
+                break;
+            case 3:
+                this.collision = true;
+                break;
         }
     }
 }

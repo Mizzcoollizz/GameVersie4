@@ -87,12 +87,8 @@ public abstract class Item {
 		return BitmapFactory.decodeResource(Main_Menu_Activity.getContext().getResources(), id);
 	}
 
-	public boolean isEqualItem(Item item){
-		if(item != null) {
-			return this.grade == item.grade && this.getClass().equals(item.getClass());
-		}else{
-			return false;
-		}
+	public boolean isEqualItem(Item item) {
+		return item != null && this.grade == item.grade && this.getClass().equals(item.getClass());
 	}
 
 	public int getGrade() {
@@ -201,8 +197,6 @@ public abstract class Item {
 			e.printStackTrace();
 		}
 			return newItem;
-
 	}
-
 
 }
