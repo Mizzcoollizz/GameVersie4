@@ -116,12 +116,5 @@
             android:layout_alignTop="@+id/imageView_Player_Inventory"
             android:layout_centerHorizontal="true" />
 
-        <com.thuis.gameversie2.Inventory_System.Inventory_View.InventoryAlternativeDropView
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:id="@+id/imageViewPlayerToolHolding"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/imageView_player_item_holding"
-            android:layout_toStartOf="@+id/imageView_player_item_holding" />
-    </RelativeLayout>
+       </RelativeLayout>
 </RelativeLayout>

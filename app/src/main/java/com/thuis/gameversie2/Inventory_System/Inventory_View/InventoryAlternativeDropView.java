@@ -98,7 +98,7 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
 //            case R.id.imageViewPlayerToolHolding:
 //                returnSlot = new ToolInventorySlot(GamePanel.getPlayer().getToolHolding());
 //                break;
-            
+
             default:
                 break;
         }

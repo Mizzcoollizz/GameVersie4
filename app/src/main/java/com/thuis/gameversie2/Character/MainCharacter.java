@@ -10,6 +10,7 @@ import android.view.MotionEvent;
 
 import com.thuis.gameversie2.GamePanel;
 import com.thuis.gameversie2.Inventory_System.Inventory_Slot;
+import com.thuis.gameversie2.Inventory_System.ToolInventorySlot;
 import com.thuis.gameversie2.MapScreen.GameView_Activity;
 import com.thuis.gameversie2.Inventory_System.Inventory_View.Inventory_Activity;
 import com.thuis.gameversie2.Items.Item;
@@ -132,9 +133,9 @@ public class MainCharacter {
 		return MapHandler.getCurrentMap().checkBorderCollision(getMapX(), getMapY(), getDirection());
 	}
 
-//	public Tool getToolHolding() {
-//		return toolHolding;
-//	}
+	public Tool getToolHolding() {
+		return (Tool) getItemHolding().getItem();
+	}
 
 //	public void setToolHolding(Tool toolHolding) {
 //		this.toolHolding = toolHolding;
@@ -324,9 +325,9 @@ public class MainCharacter {
 		return inventoryImage;
 	}
 
-//	public boolean isHoldingTool() {
-//		return (getToolHolding() != null);
-//	}
+	public boolean isHoldingTool() {
+		return (getItemHolding() != null && getItemHolding() instanceof ToolInventorySlot);
+	}
 
 	public Bitmap getItemHoldingInventoryImage() {
 		if(itemHolding != null && itemHolding.getItem() != null){
