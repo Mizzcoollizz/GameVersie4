@@ -20,7 +20,7 @@ import com.thuis.gameversie2.R;
 
 public class Inventory_Activity extends Activity {
 
-    private static ImageView toolHoldingView = null;
+    //private static ImageView toolHoldingView = null;
     private static ImageView itemHoldingView = null;
 
     @Override
@@ -45,9 +45,9 @@ public class Inventory_Activity extends Activity {
         GamePanel.setCurrentContext(this);
     }
 
-    public static ImageView getToolHoldingView() {
-        return toolHoldingView;
-    }
+//    public static ImageView getToolHoldingView() {
+//        return toolHoldingView;
+//    }
 
     public static ImageView getItemHoldingView() {
         return itemHoldingView;
@@ -64,9 +64,9 @@ public class Inventory_Activity extends Activity {
 
         itemHoldingView.setImageBitmap(GamePanel.getPlayer().getItemHoldingInventoryImage());
 
-        toolHoldingView = (ImageView) findViewById(R.id.imageViewPlayerToolHolding);
-
-        toolHoldingView.setImageBitmap(GamePanel.getPlayer().getToolHoldingInventoryImage());
+//        toolHoldingView = (ImageView) findViewById(R.id.imageViewPlayerToolHolding);
+//
+//        toolHoldingView.setImageBitmap(GamePanel.getPlayer().getToolHoldingInventoryImage());
 
     }
 
@@ -78,7 +78,7 @@ public class Inventory_Activity extends Activity {
         }
 
         itemHoldingView.setBackgroundColor(Color.TRANSPARENT);
-        toolHoldingView.setBackgroundColor(Color.TRANSPARENT);
+//        toolHoldingView.setBackgroundColor(Color.TRANSPARENT);
         }
 
     public static void onInventoryItemSelect(InventoryDropView inventoryDropView){

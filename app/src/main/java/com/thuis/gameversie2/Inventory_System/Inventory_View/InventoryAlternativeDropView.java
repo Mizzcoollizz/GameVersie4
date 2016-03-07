@@ -95,9 +95,9 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
             case R.id.imageView_player_item_holding:
                 returnSlot =  GamePanel.getPlayer().getItemHolding();
                 break;
-            case R.id.imageViewPlayerToolHolding:
-                returnSlot = new ToolInventorySlot(GamePanel.getPlayer().getToolHolding());
-                break;
+//            case R.id.imageViewPlayerToolHolding:
+//                returnSlot = new ToolInventorySlot(GamePanel.getPlayer().getToolHolding());
+//                break;
             default:
                 break;
         }
@@ -106,7 +106,7 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
 
     @Override
     public boolean dropItem(Item item, InventoryDropView draggingView) {
-        //TODO still not working
+
         if(draggingView instanceof InventoryItemGridView){
             return dropInventoryItem(item, (InventoryItemGridView) draggingView);
         }else if(draggingView instanceof InventoryAlternativeDropView){
@@ -127,15 +127,15 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
                 GamePanel.getPlayer().setItemHolding(inventoryAlternativeDropView.getItemSlot());
                 inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
                 return true;
-            case R.id.imageViewPlayerToolHolding:
-
-                    if (item instanceof Tool) {
-                        GamePanel.getPlayer().setToolHolding((Tool) item);
-                        inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
-                        return true;
-                    } else {
-                        return false;
-                    }
+//            case R.id.imageViewPlayerToolHolding:
+//
+//                    if (item instanceof Tool) {
+//                        GamePanel.getPlayer().setToolHolding((Tool) item);
+//                        inventoryAlternativeDropView.setItemSlot(tempInventorySlot);
+//                        return true;
+//                    } else {
+//                        return false;
+//                    }
 
             default:
                 return false;
@@ -147,9 +147,9 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
             case R.id.imageView_player_item_holding:
               GamePanel.getPlayer().setItemHolding(itemSlot);
                 break;
-            case R.id.imageViewPlayerToolHolding:
-                GamePanel.getPlayer().setToolHolding((Tool) itemSlot.getItem());
-            break;
+//            case R.id.imageViewPlayerToolHolding:
+//                GamePanel.getPlayer().setToolHolding((Tool) itemSlot.getItem());
+//            break;
 
         }
         setCurrentImage();
@@ -168,17 +168,17 @@ public class InventoryAlternativeDropView extends ImageView implements Inventory
                 GamePanel.getPlayer().setItemHolding(inventory_slot);
                 setCurrentImage();
                 return true;
-            case R.id.imageViewPlayerToolHolding:
-                if(item instanceof Tool){
-                    if(this.checkHasItem()) {
-                        GamePanel.getInventory().putItem(this.getItemSlot(), inventoryItemGridView.getPosition());
-                    }
-                    GamePanel.getPlayer().setToolHolding((Tool) item);
-                    setCurrentImage();
-                    return true;
-                }else{
-                    return false;
-                }
+//            case R.id.imageViewPlayerToolHolding:
+//                if(item instanceof Tool){
+//                    if(this.checkHasItem()) {
+//                        GamePanel.getInventory().putItem(this.getItemSlot(), inventoryItemGridView.getPosition());
+//                    }
+//                    GamePanel.getPlayer().setToolHolding((Tool) item);
+//                    setCurrentImage();
+//                    return true;
+//                }else{
+//                    return false;
+//                }
             default:
                 return false;
         }

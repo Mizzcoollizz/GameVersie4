@@ -31,7 +31,7 @@ public class MainCharacter {
 	private String hairColor = "Blond";
 
 	private Context context = null;
-	private Bitmap toolHoldingInventoryImage;
+	//private Bitmap toolHoldingInventoryImage;
 
 	public int getSpeed() {
 		return speed;
@@ -73,7 +73,7 @@ public class MainCharacter {
 
 	private Inventory_Slot itemHolding = null;
 
-	private Tool toolHolding = null;
+	//private Tool toolHolding = null;
 
 	public void setItemHolding(Inventory_Slot itemHolding) {
 		this.itemHolding = itemHolding;
@@ -132,13 +132,13 @@ public class MainCharacter {
 		return MapHandler.getCurrentMap().checkBorderCollision(getMapX(), getMapY(), getDirection());
 	}
 
-	public Tool getToolHolding() {
-		return toolHolding;
-	}
+//	public Tool getToolHolding() {
+//		return toolHolding;
+//	}
 
-	public void setToolHolding(Tool toolHolding) {
-		this.toolHolding = toolHolding;
-	}
+//	public void setToolHolding(Tool toolHolding) {
+//		this.toolHolding = toolHolding;
+//	}
 
 	public long getMapX() {
 		return mapX;
@@ -324,9 +324,9 @@ public class MainCharacter {
 		return inventoryImage;
 	}
 
-	public boolean isHoldingTool() {
-		return (getToolHolding() != null);
-	}
+//	public boolean isHoldingTool() {
+//		return (getToolHolding() != null);
+//	}
 
 	public Bitmap getItemHoldingInventoryImage() {
 		if(itemHolding != null && itemHolding.getItem() != null){
@@ -336,14 +336,14 @@ public class MainCharacter {
 		}
 	}
 
-	public Bitmap getToolHoldingInventoryImage() {
-		if(toolHolding != null){
-			return toolHolding.getInventoryImage();
-		}else{
-			return Item.borderImageBitmap;
-		}
-
-	}
+//	public Bitmap getToolHoldingInventoryImage() {
+//		if(toolHolding != null){
+//			return toolHolding.getInventoryImage();
+//		}else{
+//			return Item.borderImageBitmap;
+//		}
+//
+//	}
 
 	public Rect getInteractionRect(){
 		int rectWidth = MapHandler.getCurrentMap().getTile_width() * 3;
